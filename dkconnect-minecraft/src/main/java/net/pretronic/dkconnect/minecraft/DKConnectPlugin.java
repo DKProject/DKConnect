@@ -48,7 +48,7 @@ import java.util.concurrent.TimeUnit;
 
 public class DKConnectPlugin extends MinecraftPlugin {
 
-    public static final String RESOURCE_ID = "1e6d4f31-e2e0-11eb-8ba0-0242ac180002\n";
+    public static final String RESOURCE_ID = "1e6d4f31-e2e0-11eb-8ba0-0242ac180002";
     public static final String PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoTmvCUx+BvHKWeyCcjpOC8lbe8Pe/1ERyYu5/aSfj1qY2gEa/ie3u3c+ejgiZ5IBckR4qKmRkrBNQCtmd7ojinB7WFqM1xvdyWkK/s3Vv0tzBgZwqXTjX6W07WRFrp/oW1JvA8aShdoVqDVxlWYTkd6mKTTBEs9vKfeTn4GuQExG+qXV7gYm3WAMGehQ3YL3zxGGxjV78HMLyNrK7RbmX0AocDTpDoJeUNT3RDHS9kHQHSUYhHup3XjhymWeiVSh4cb8R5IF61uuxQdpE9KtXuT4qSCgHPUQyoRSuJq6zflCIJngSoTF09eDS0wTeICNvt0WMVpBexDmYJN8owwIgwIDAQAB";
 
     private DefaultDKConnect dkConnect;
