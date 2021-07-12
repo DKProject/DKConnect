@@ -64,9 +64,6 @@ messageTriggers:
             for (MinecraftEventMessageTrigger messageTrigger : getMinecraftEventMessageTriggers()) {
 
                 McNative.getInstance().getLocal().getEventBus().subscribe(plugin, messageTrigger.getEventClass(), event -> {
-                    if(VariableDescriberRegistry.getDescriber(event.getClass()) == null) {
-                        VariableDescriberRegistry.registerDescriber(event.getClass());//@Todo optimize
-                    }
                     VoiceAdapter adapter = plugin.getDKConnect().getVoiceAdapter(voiceAdapterName);
 
                     Textable text = messageTrigger.getEmbedKey() != null ? adapter.getMessage(messageTrigger.getEmbedKey()) : new StringTextable(messageTrigger.getMessage());

@@ -12,8 +12,5 @@ public class DescriberRegistrar {
     public static void register() {
         VariableDescriber<DefaultDKConnectPlayer> playerDescriber = VariableDescriberRegistry.registerDescriber(DefaultDKConnectPlayer.class);
         playerDescriber.setForwardFunction(player -> McNative.getInstance().getPlayerManager().getPlayer(player.getId()));
-
-        VariableDescriberRegistry.registerDescriber(DefaultPendingVerification.class);
-        VariableDescriberRegistry.registerDescriber(DefaultVerification.class);
     }
 }
