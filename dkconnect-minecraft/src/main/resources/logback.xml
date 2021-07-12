@@ -1,0 +1,16 @@
+<configuration>
+
+    <logger name="net.dv8tion.jda" level="ERROR" />
+
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="Console" />
+        <appender-ref ref="Sentry" />
+    </root>
+
+</configuration>

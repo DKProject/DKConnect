@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.pretronic.dkconnect</groupId>
+    <artifactId>DKConnect</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0.0-SNAPSHOT</version>
+    <modules>
+        <module>dkconnect-api</module>
+        <module>dkconnect-common</module>
+        <module>dkconnect-minecraft</module>
+        <module>dkconnect-voice-adapter-discord</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+
+        <dependency.pretronic.libraries>1.2.108.252-SNAPSHOT</dependency.pretronic.libraries>
+        <dependency.pretronic.databasequery>1.2.38.65-SNAPSHOT</dependency.pretronic.databasequery>
+
+        <dependency.mcnative.api>1.6.10.196-SNAPSHOT</dependency.mcnative.api>
+        <dependency.mcnative.runtime>1.13.22.133-SNAPSHOT</dependency.mcnative.runtime>
+        <dependency.mcnative.licensing>1.0.5.8-SNAPSHOT</dependency.mcnative.licensing>
+        <dependency.mcnative.buildtool>1.0.8.15-SNAPSHOT</dependency.mcnative.buildtool>
+        <dependency.mcnative.loader>1.7.75.53</dependency.mcnative.loader>
+
+        <dependeny.jda>4.3.0_283</dependeny.jda>
+
+        <jetbrains.annotation>20.1.0</jetbrains.annotation>
+
+        <plugin.compiler>3.8.1</plugin.compiler>
+        <plugin.source>3.2.1</plugin.source>
+        <plugin.maven.shade>3.2.2</plugin.maven.shade>
+        <plugin.maven.deploy>3.0.0-M1</plugin.maven.deploy>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>pretronic</id>
+            <url>https://repository.pretronic.net/repository/pretronic/</url>
+        </repository>
+        <repository>
+            <id>dv8tion</id>
+            <name>m2-dv8tion</name>
+            <url>https://m2.dv8tion.net/releases</url>
+        </repository>
+    </repositories>
+</project>

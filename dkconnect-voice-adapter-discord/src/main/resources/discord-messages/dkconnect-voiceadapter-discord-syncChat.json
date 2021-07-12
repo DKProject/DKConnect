@@ -1,0 +1,13 @@
+{
+  "content": null,
+  "embeds": [
+    {
+      "description": "{event.message}",
+      "color": 3092790,
+      "author": {
+        "name": "{event.player.name}",
+        "icon_url": "https://minotar.net/avatar/{event.player.uniqueId}/300.png"
+      }
+    }
+  ]
+}

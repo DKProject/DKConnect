@@ -1,0 +1,39 @@
+{
+  "content": null,
+  "embeds": [
+    {
+      "title": "${dkconnect.voiceadapter.discord.notification.ban.title}",
+      "description": ">>> **{event.player.name}** `{event.player.uniqueId}`",
+      "color": 3092790,
+      "fields": [
+        {
+          "name": ":label:  ${dkconnect.voiceadapter.discord.notification.ban.fields.banId.name}",
+          "value": "`{event.entry.id}`",
+          "inline": true
+        },
+        {
+          "name": ":bust_in_silhouette: ${dkconnect.voiceadapter.discord.notification.ban.fields.staff.name}",
+          "value": "TODO",
+          "inline": true
+        },
+        {
+          "name": ":closed_book: ${dkconnect.voiceadapter.discord.notification.ban.fields.reason.name}",
+          "value": "`{event.snapshot.reason}`",
+          "inline": true
+        },
+        {
+          "name": ":stopwatch: ${dkconnect.voiceadapter.discord.notification.ban.fields.duration.name}",
+          "value": "`{event.snapshot.durationFormatted}`",
+          "inline": true
+        }
+      ],
+      "author": {
+        "name": "DKBans",
+        "icon_url": "https://cdn.phyroks.de/pretronic/icons/dkbans.png"
+      },
+      "thumbnail": {
+        "url": "https://cdn.phyroks.de/emoji/1f6ab.png"
+      }
+    }
+  ]
+}
