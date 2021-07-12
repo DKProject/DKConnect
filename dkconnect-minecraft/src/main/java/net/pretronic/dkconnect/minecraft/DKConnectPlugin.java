@@ -29,6 +29,9 @@ import net.pretronic.libraries.plugin.lifecycle.Lifecycle;
 import net.pretronic.libraries.plugin.lifecycle.LifecycleState;
 import net.pretronic.libraries.utility.annonations.Internal;
 import net.pretronic.libraries.utility.io.FileUtil;
+import org.mcnative.licensing.context.platform.McNativeLicenseIntegration;
+import org.mcnative.licensing.exceptions.CloudNotCheckoutLicenseException;
+import org.mcnative.licensing.exceptions.LicenseNotValidException;
 import org.mcnative.runtime.api.McNative;
 import org.mcnative.runtime.api.network.NetworkIdentifier;
 import org.mcnative.runtime.api.network.messaging.Messenger;
@@ -45,9 +48,8 @@ import java.util.concurrent.TimeUnit;
 
 public class DKConnectPlugin extends MinecraftPlugin {
 
-    public static final String RESOURCE_ID = "a120140d-bbdf-11eb-8ba0-0242ac180002";
-    public static final String PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwcUY5PfVh6jLu7pP27cAtp95HwNpxfvE5rnv1ptBmYRUMIJS1vCutfjlEogfTMZL2aiKhdAKW4wuGNzzGPKxVcV/iVRiGtJPHRPpdvIgPkGVrglZVDrV8pcyhLd7L42erskdUZl9iAvXx3KZVp/5q/njRz0n9ZWGU7KHs4+ngpCRyFw1N1Kr/tZkqz+BgLXNT3Fxv2EU6qDpLNutsXkojmO+oMUsz8sFDPf38aFzn8lNNpFNTxdJgaaMEZN12G9WKj6XmKIdbq04Qcb7oX0BhugqPbvW0bULG+ija9aEOevdyFLrKrDT34qUmo8PmDPh1/FZmazsPTv1HIWkNhY1qwIDAQAB";
-
+    public static final String RESOURCE_ID = "1e6d4f31-e2e0-11eb-8ba0-0242ac180002\n";
+    public static final String PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoTmvCUx+BvHKWeyCcjpOC8lbe8Pe/1ERyYu5/aSfj1qY2gEa/ie3u3c+ejgiZ5IBckR4qKmRkrBNQCtmd7ojinB7WFqM1xvdyWkK/s3Vv0tzBgZwqXTjX6W07WRFrp/oW1JvA8aShdoVqDVxlWYTkd6mKTTBEs9vKfeTn4GuQExG+qXV7gYm3WAMGehQ3YL3zxGGxjV78HMLyNrK7RbmX0AocDTpDoJeUNT3RDHS9kHQHSUYhHup3XjhymWeiVSh4cb8R5IF61uuxQdpE9KtXuT4qSCgHPUQyoRSuJq6zflCIJngSoTF09eDS0wTeICNvt0WMVpBexDmYJN8owwIgwIDAQAB";
 
     private DefaultDKConnect dkConnect;
     private Collection<DiscordGuildConfig> guildConfigs;
@@ -56,7 +58,7 @@ public class DKConnectPlugin extends MinecraftPlugin {
     public void onLoad(LifecycleState state) {
         getLogger().info("DKConnect is starting, please wait..");
         //SLF4JStaticBridge.setLogger(getLogger());
-        /*try{
+        try{
             McNativeLicenseIntegration.newContext(this,RESOURCE_ID,PUBLIC_KEY).verifyOrCheckout();
         }catch (LicenseNotValidException | CloudNotCheckoutLicenseException e){
             getLogger().error("--------------------------------");
@@ -66,7 +68,7 @@ public class DKConnectPlugin extends MinecraftPlugin {
             getLogger().info("DKConnect is shutting down");
             getLoader().shutdown();
             return;
-        }*/
+        }
 
         DefaultDKConnect dkConnect = new DefaultDKConnect(getRuntime().getLocal().getEventBus(), getDatabaseOrCreate(),
                 playerId -> McNative.getInstance().getPlayerManager().getPlayer(playerId).getLanguage());
@@ -147,7 +149,7 @@ public class DKConnectPlugin extends MinecraftPlugin {
 
     private DiscordVoiceAdapter createDiscordVoiceAdapter(DKConnect dkConnect, JDA jda, EventBus eventBus,  DiscordGuildConfig guildConfig) {
         DiscordVoiceAdapter discordVoiceAdapter = new DiscordVoiceAdapter(dkConnect, guildConfig.getVoiceAdapterName(),
-                jda, guildConfig.getGuildId(), DiscordSharedConfig.COMMAND_PREFIX, eventBus, (triple) -> {
+                jda, guildConfig.getGuildId(), DiscordSharedConfig.COMMAND_PREFIX, new ArrayList<>(), eventBus, (triple) -> {
             MessageProvider messageProvider = McNative.getInstance().getRegistry().getService(MessageProvider.class);
             return messageProvider.buildMessage(triple.getFirst(), triple.getThird(), triple.getSecond());
         });
