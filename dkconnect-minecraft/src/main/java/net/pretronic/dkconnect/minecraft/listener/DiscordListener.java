@@ -21,6 +21,7 @@ public class DiscordListener {
 
     @Listener
     public void onMessageReceive(GuildMessageReceivedEvent event) {
+        if(event.getJDA().getSelfUser().equals(event.getAuthor())) return;
         for (DiscordGuildConfig guildConfig : plugin.getGuildConfigs()) {
             if(guildConfig.getGuildId() == event.getGuild().getIdLong()) {
                 VoiceAdapter voiceAdapter = plugin.getDKConnect().getVoiceAdapter(guildConfig.getVoiceAdapterName());
