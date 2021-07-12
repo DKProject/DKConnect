@@ -6,7 +6,7 @@ final String CI_NAME = "PretronicCI"
 final String CI_EMAIL = "ci@pretronic.net"
 final String COMMIT_MESSAGE = "Version change %version%"
 
-final String RESOURCE_ID = "1e6d4f31-e2e0-11eb-8ba0-0242ac180002\n"
+final String RESOURCE_ID = "1e6d4f31-e2e0-11eb-8ba0-0242ac180002"
 
 final String BRANCH_DEVELOPMENT = "development"
 final String BRANCH_BETA = "beta"
