@@ -33,7 +33,7 @@ public class MinecraftEventMessageTrigger {
             Class.forName(eventClass);
             return true;
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            return false;
         }
     }
 
