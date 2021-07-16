@@ -104,10 +104,10 @@ public class DKConnectPlugin extends MinecraftPlugin {
 
     private void registerCommands(DefaultDKConnect dkConnect) {
         for (Map.Entry<String, CommandConfiguration> entry : DKConnectConfig.VERIFY_COMMANDS.entrySet()) {
-            getRuntime().getLocal().getCommandManager().registerCommand(new VerifyCommand(this, entry.getValue(), dkConnect.getVoiceAdapter(entry.getKey())));
+            getRuntime().getLocal().getCommandManager().registerCommand(new VerifyCommand(this, entry.getValue(), dkConnect.getVoiceAdapterByVerificationSystemName(entry.getKey())));
         }
         for (Map.Entry<String, CommandConfiguration> entry : DKConnectConfig.UNVERIFY_COMMANDS.entrySet()) {
-            getRuntime().getLocal().getCommandManager().registerCommand(new UnverifyCommand(this, entry.getValue(), dkConnect.getVoiceAdapter(entry.getKey())));
+            getRuntime().getLocal().getCommandManager().registerCommand(new UnverifyCommand(this, entry.getValue(), dkConnect.getVoiceAdapterByVerificationSystemName(entry.getKey())));
         }
         getRuntime().getLocal().getCommandManager().registerCommand(new DKConnectCommand(this));
     }

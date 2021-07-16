@@ -136,7 +136,7 @@ public class DefaultDKConnectPlayer implements DKConnectPlayer {
 
             this.dkConnect.getStorage().getPlayerVerifications().find().where("PlayerId", getId()).execute()
                     .loadIn(this.verifications, resultEntry -> new DefaultVerification(dkConnect, this,
-                            dkConnect.getVoiceAdapter(resultEntry.getString("VoiceAdapterName")),
+                            dkConnect.getVoiceAdapterByVerificationSystemName(resultEntry.getString("VoiceAdapterName")),
                             resultEntry.getString("UserId"), resultEntry.getString("Username"),
                             resultEntry.getLong("Time")));
         }
@@ -149,7 +149,7 @@ public class DefaultDKConnectPlayer implements DKConnectPlayer {
 
             this.dkConnect.getStorage().getPlayerPendingVerifications().find().where("PlayerId", getId()).execute()
                     .loadIn(this.pendingVerifications, resultEntry -> new DefaultPendingVerification(dkConnect, this,
-                            dkConnect.getVoiceAdapter(resultEntry.getString("VoiceAdapterName")),
+                            dkConnect.getVoiceAdapterByVerificationSystemName(resultEntry.getString("VoiceAdapterName")),
                             resultEntry.getString("Code"),
                             resultEntry.getLong("Time")));
         }

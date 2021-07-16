@@ -16,5 +16,7 @@ public interface DKConnect {
 
     VoiceAdapter getVoiceAdapter(String name);
 
+    VoiceAdapter getVoiceAdapterByVerificationSystemName(String name);
+
     void registerVoiceAdapter(VoiceAdapter voiceAdapter);
 }
