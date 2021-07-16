@@ -29,10 +29,13 @@ messages:
   dkconnect.voiceadapter.discord.command.verify.noPendingVerification: 'There is no pending verification for {code} available'
   dkconnect.voiceadapter.discord.command.verify.usage: 'Usage: {commandPrefix}verify <code>'
 
-  dkconnect.voiceadapter.discord.notification.ban.title: 'New Ban'
-  dkconnect.voiceadapter.discord.notification.ban.fields.banId.name: 'Ban ID'
+  dkconnect.voiceadapter.discord.notification.ban.title: 'New {event.snapshot.punishmentType.name}'
+  dkconnect.voiceadapter.discord.notification.ban.fields.banId.name: '{event.snapshot.punishmentType.name} ID'
   dkconnect.voiceadapter.discord.notification.ban.fields.staff.name: 'Staff'
   dkconnect.voiceadapter.discord.notification.ban.fields.reason.name: 'Reason'
   dkconnect.voiceadapter.discord.notification.ban.fields.duration.name: 'Duration'
+
+  dkconnect.voiceadapter.discord.notification.join.body: '{event.player.name} has joined the server'
+  dkconnect.voiceadapter.discord.notification.leave.body: '{event.player.name} has left the server'
 
   dkconnect.chatSync.message: '<{player.name}> <message>'

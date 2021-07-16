@@ -87,7 +87,7 @@ public class DefaultDKConnectPlayer implements DKConnectPlayer {
 
         this.dkConnect.getStorage().getPlayerPendingVerifications().insert()
                 .set("PlayerId", getId())
-                .set("VoiceAdapterName", voiceAdapter.getName())
+                .set("VoiceAdapterName", voiceAdapter.getVerificationSystemName())
                 .set("Code", code)
                 .set("Time", time)
                 .execute();

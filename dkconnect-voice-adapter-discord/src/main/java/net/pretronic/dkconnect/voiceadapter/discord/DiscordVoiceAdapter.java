@@ -86,7 +86,7 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
 
     @Override
     public Textable getMessage(String rawKey) {
-        String key = rawKey.replace("%voiceAdapter%", getName());
+        String key = rawKey.replace("%voiceAdapter%", getVerificationSystemName());
         DiscordMessage message = this.messages.get(key);
         if(message == null) return new StringTextable("The message "+rawKey+" was not found.");
         return message;
@@ -179,6 +179,11 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
     @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public String getVerificationSystemName() {
+        return "discord";
     }
 
     @Internal

@@ -1,13 +1,11 @@
 package net.pretronic.dkconnect.minecraft;
 
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.pretronic.dkconnect.api.DKConnect;
 import net.pretronic.dkconnect.api.player.DKConnectPlayer;
 import net.pretronic.dkconnect.common.DefaultDKConnect;
 import net.pretronic.dkconnect.common.voiceadapter.routed.RoutedVoiceAdapter;
 import net.pretronic.dkconnect.common.voiceadapter.routed.RoutedVoiceAdapterAction;
+import net.pretronic.dkconnect.minecraft.commands.DKConnectCommand;
 import net.pretronic.dkconnect.minecraft.commands.UnverifyCommand;
 import net.pretronic.dkconnect.minecraft.commands.VerifyCommand;
 import net.pretronic.dkconnect.minecraft.config.DKConnectConfig;
@@ -111,14 +109,15 @@ public class DKConnectPlugin extends MinecraftPlugin {
         for (Map.Entry<String, CommandConfiguration> entry : DKConnectConfig.UNVERIFY_COMMANDS.entrySet()) {
             getRuntime().getLocal().getCommandManager().registerCommand(new UnverifyCommand(this, entry.getValue(), dkConnect.getVoiceAdapter(entry.getKey())));
         }
+        getRuntime().getLocal().getCommandManager().registerCommand(new DKConnectCommand(this));
     }
 
     private void registerVoiceAdapters(DefaultDKConnect dkConnect) {
         if(!McNative.getInstance().isNetworkAvailable() || (McNative.getInstance().getPlatform().isProxy() && !isVoiceAdapterAlreadyHosted("discord"))) {
-            JDA jda;
-            EventBus eventBus = new DefaultEventBus();
+            net.dv8tion.jda.api.JDA jda;
+            EventBus eventBus = McNative.getInstance().getLocal().getEventBus();
             try {
-                jda = JDABuilder.create(DiscordSharedConfig.BOT_TOKEN, Arrays.asList(GatewayIntent.values()))
+                jda = net.dv8tion.jda.api.JDABuilder.create(DiscordSharedConfig.BOT_TOKEN, Arrays.asList(net.dv8tion.jda.api.requests.GatewayIntent.values()))
                         .setAutoReconnect(true)
                         .build();
 
@@ -138,16 +137,16 @@ public class DKConnectPlugin extends MinecraftPlugin {
                 }
             }
 
-            if(McNative.getInstance().isNetworkAvailable()) {
+            /*if(McNative.getInstance().isNetworkAvailable()) {
                 Messenger messenger = McNative.getInstance().getNetwork().getMessenger();
                 messenger.registerChannel(RoutedVoiceAdapterMessagingChannel.CHANNEL_NAME, this, new RoutedVoiceAdapterMessagingChannel());
-            }
+            }*/
         } else {
             dkConnect.registerVoiceAdapter(new RoutedVoiceAdapter(dkConnect, "discord"));
         }
     }
 
-    private DiscordVoiceAdapter createDiscordVoiceAdapter(DKConnect dkConnect, JDA jda, EventBus eventBus,  DiscordGuildConfig guildConfig) {
+    private DiscordVoiceAdapter createDiscordVoiceAdapter(DKConnect dkConnect, net.dv8tion.jda.api.JDA jda, EventBus eventBus,  DiscordGuildConfig guildConfig) {
         DiscordVoiceAdapter discordVoiceAdapter = new DiscordVoiceAdapter(dkConnect, guildConfig.getVoiceAdapterName(),
                 jda, guildConfig.getGuildId(), DiscordSharedConfig.COMMAND_PREFIX, new ArrayList<>(), eventBus, (triple) -> {
             MessageProvider messageProvider = McNative.getInstance().getRegistry().getService(MessageProvider.class);

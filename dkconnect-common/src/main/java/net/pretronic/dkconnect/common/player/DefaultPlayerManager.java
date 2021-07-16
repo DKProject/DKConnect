@@ -93,7 +93,7 @@ public class DefaultPlayerManager implements PlayerManager {
 
             QueryResultEntry resultEntry = dkConnect.getStorage().getPlayerVerifications().find()
                     .get("PlayerId")
-                    .where("VoiceAdapterName", voiceAdapter.getName())
+                    .where("VoiceAdapterName", voiceAdapter.getVerificationSystemName())
                     .where("Username", username)
                     .execute().firstOrNull();
             if(resultEntry == null) return null;
@@ -125,7 +125,7 @@ public class DefaultPlayerManager implements PlayerManager {
 
             QueryResultEntry resultEntry = dkConnect.getStorage().getPlayerVerifications().find()
                     .get("PlayerId")
-                    .where("VoiceAdapterName", voiceAdapter.getName())
+                    .where("VoiceAdapterName", voiceAdapter.getVerificationSystemName())
                     .where("UserId", userId)
                     .execute().firstOrNull();
             if(resultEntry == null) return null;
@@ -157,7 +157,7 @@ public class DefaultPlayerManager implements PlayerManager {
 
             QueryResultEntry resultEntry = dkConnect.getStorage().getPlayerPendingVerifications().find()
                     .get("PlayerId")
-                    .where("VoiceAdapterName", voiceAdapter.getName())
+                    .where("VoiceAdapterName", voiceAdapter.getVerificationSystemName())
                     .where("Code", code)
                     .execute().firstOrNull();
             if(resultEntry == null) return null;

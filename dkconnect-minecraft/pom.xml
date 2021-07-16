@@ -37,7 +37,7 @@
                     <manifest>
                         <installMcNative>true</installMcNative>
                         <name>DKConnect</name>
-                        <id>a120140d-bbdf-11eb-8ba0-0242ac180002</id>
+                        <id>1e6d4f31-e2e0-11eb-8ba0-0242ac180002</id>
                         <version>${project.version}</version>
                         <main>net.pretronic.dkconnect.minecraft.DKConnectPlugin</main>
                         <website>https://pretronic.net</website>

@@ -15,7 +15,7 @@ public class Util {
                 for (DiscordGuildConfig guildConfig : dkConnectPlugin.getGuildConfigs()) {
                     for (RoleAssignment roleAssignment : guildConfig.getRoleAssignments()) {
                         boolean hasDiscordRole = roleIds.contains(roleAssignment.getRoleId());
-                        boolean hasPermission = minecraftPlayer.hasPermission(roleAssignment.getPermission());
+                        boolean hasPermission = minecraftPlayer.hasPermission(roleAssignment.getPermission()) || roleAssignment.getPermission().equalsIgnoreCase("default");
 
                         if(hasPermission && !hasDiscordRole) {
                             verification.assignRole(roleAssignment.getRoleId());

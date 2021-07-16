@@ -1,0 +1,9 @@
+{
+  "content": null,
+  "embeds": [
+    {
+      "title": "${dkconnect.voiceadapter.discord.notification.leave.body}",
+      "color": null
+    }
+  ]
+}

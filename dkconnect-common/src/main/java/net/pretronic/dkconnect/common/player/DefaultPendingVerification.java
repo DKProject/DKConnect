@@ -1,5 +1,6 @@
 package net.pretronic.dkconnect.common.player;
 
+import net.pretronic.dkconnect.api.player.DKConnectPlayer;
 import net.pretronic.dkconnect.api.voiceadapter.VoiceAdapter;
 import net.pretronic.dkconnect.api.event.verification.verify.VerifiedEvent;
 import net.pretronic.dkconnect.api.event.verification.verify.VerifyEvent;
@@ -47,7 +48,8 @@ public class DefaultPendingVerification implements PendingVerification {
     @Override
     public Verification complete(String userId, String username) {
         Validate.notNull(username);
-        //@Todo Check for other verifications
+
+        DKConnectPlayer alreadyVerifiedPlayer = this.dkConnect.getPlayerManager().getPlayerByVerificationUserId(voiceAdapter, userId);
 
         VerifyEvent event = new DefaultVerifyEvent(dkConnect, this.player, userId, username, this);
         this.dkConnect.getEventBus().callEvent(VerifyEvent.class, event);
@@ -57,7 +59,7 @@ public class DefaultPendingVerification implements PendingVerification {
 
         this.dkConnect.getStorage().getPlayerVerifications().insert()
                 .set("PlayerId", this.player.getId())
-                .set("VoiceAdapterName", getVoiceAdapter().getName())
+                .set("VoiceAdapterName", getVoiceAdapter().getVerificationSystemName())
                 .set("Username", username)
                 .set("UserId", userId)
                 .set("Time", time)
@@ -69,10 +71,14 @@ public class DefaultPendingVerification implements PendingVerification {
 
         this.dkConnect.getStorage().getPlayerPendingVerifications().delete()
                 .where("PlayerId", player.getId())
-                .where("VoiceAdapterName", voiceAdapter.getName())
+                .where("VoiceAdapterName", voiceAdapter.getVerificationSystemName())
                 .execute();
 
         this.player.removePendingVerification(this);
+
+        if(alreadyVerifiedPlayer != null) {
+            alreadyVerifiedPlayer.getVerification(this.voiceAdapter).unverify();
+        }
 
         this.dkConnect.getEventBus().callEvent(VerifiedEvent.class, new DefaultVerifiedEvent(dkConnect, player, verification));
         return verification;

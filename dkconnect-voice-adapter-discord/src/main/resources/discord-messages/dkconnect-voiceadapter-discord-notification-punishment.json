@@ -13,7 +13,7 @@
         },
         {
           "name": ":bust_in_silhouette: ${dkconnect.voiceadapter.discord.notification.ban.fields.staff.name}",
-          "value": "TODO",
+          "value": "{event.snapshot.staff.name}",
           "inline": true
         },
         {

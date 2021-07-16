@@ -17,6 +17,8 @@ public interface VoiceAdapter extends ObjectOwner {
     @Override
     String getName();
 
+    String getVerificationSystemName();
+
     String getType();
 
     DKConnect getDKConnect();

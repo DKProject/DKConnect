@@ -76,7 +76,7 @@ public class DefaultVerification implements Verification {
 
         this.dkConnect.getStorage().getPlayerVerifications().delete()
                 .where("PlayerId", player.getId())
-                .where("VoiceAdapterName", voiceAdapter.getName())
+                .where("VoiceAdapterName", voiceAdapter.getVerificationSystemName())
                 .where("UserId", userId)
                 .execute();
         player.removeVerification(this);
