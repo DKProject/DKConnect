@@ -142,7 +142,7 @@ public class DKConnectPlugin extends MinecraftPlugin {
                 messenger.registerChannel(RoutedVoiceAdapterMessagingChannel.CHANNEL_NAME, this, new RoutedVoiceAdapterMessagingChannel());
             }*/
         } else {
-            dkConnect.registerVoiceAdapter(new RoutedVoiceAdapter(dkConnect, "discord"));
+            //dkConnect.registerVoiceAdapter(new RoutedVoiceAdapter(dkConnect, "discord"));
         }
     }
 

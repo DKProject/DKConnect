@@ -106,5 +106,10 @@ public class RoutedVoiceAdapter implements VoiceAdapter {
         return this.type;
     }
 
+    @Override
+    public String getVerificationSystemName() {
+        return null;
+    }
+
 
 }
