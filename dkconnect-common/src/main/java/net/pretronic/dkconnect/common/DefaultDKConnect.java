@@ -53,6 +53,13 @@ public class DefaultDKConnect implements DKConnect {
     }
 
     @Override
+    public VoiceAdapter getVoiceAdapterByVerificationSystemName(String name) {
+        VoiceAdapter voiceAdapter = Iterators.findOne(voiceAdapters, adapter -> adapter.getVerificationSystemName().equalsIgnoreCase(name));
+        if(voiceAdapter == null) throw new IllegalArgumentException("Can't find voice adapter for verification system name " + name);
+        return voiceAdapter;
+    }
+
+    @Override
     public void registerVoiceAdapter(VoiceAdapter voiceAdapter) {
         this.voiceAdapters.add(voiceAdapter);
     }
