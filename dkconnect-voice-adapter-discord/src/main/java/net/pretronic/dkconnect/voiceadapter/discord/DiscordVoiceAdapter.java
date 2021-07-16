@@ -139,7 +139,7 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
         String userId = verification.getUserId();
 
         DiscordBotUtil.getMember(this, userId).thenAccept(member -> {
-            member.getGuild().addRoleToMember(member, DiscordBotUtil.getRole(member.getGuild(), roleId)).queue(unused -> System.out.println("success"), Throwable::printStackTrace);
+            member.getGuild().addRoleToMember(member, DiscordBotUtil.getRole(member.getGuild(), roleId)).queue(unused -> {}, Throwable::printStackTrace);
         });
     }
 
@@ -210,16 +210,12 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
 
         FileUtil.processFilesHierarchically(location, file -> {
             try {
-                System.out.println("load message:"+file.getName());
                 String key = file.getName().split("\\.")[0].replace("-", ".");
                 Document document = DocumentFileType.JSON.getReader().read(file);
-                System.out.println("before");
                 DiscordMessage message = document.getAsObject(DiscordMessage.class);
-                System.out.println("after");
                 message.setVoiceAdapter(this);
                 messages.put(key, message);
             } catch (Exception e) {
-                System.out.println("Exception");
                 throw new RuntimeException(e);
             }
         });

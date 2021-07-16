@@ -124,7 +124,7 @@ public class DKConnectPlugin extends MinecraftPlugin {
                 jda.setEventManager(new MappedEventManager(this, eventBus));
                 jda.addEventListener(new DiscordListener(this));
             } catch (LoginException e) {
-                throw new RuntimeException("Can't start discord bot ", e);
+                throw new RuntimeException("Can't start discord bot", e);
             }
             boolean globalListenerRegistered = false;
             this.guildConfigs = loadDiscordGuildConfigs();

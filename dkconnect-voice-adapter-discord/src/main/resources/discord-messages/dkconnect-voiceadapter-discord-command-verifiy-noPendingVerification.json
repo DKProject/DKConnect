@@ -1,4 +1,3 @@
 {
-  "content": "${dkconnect.voiceadapter.discord.command.verify.noPendingVerification}",
-  "embeds": null
+  "content": "${dkconnect.voiceadapter.discord.command.verify.noPendingVerification}"
 }

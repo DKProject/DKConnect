@@ -29,7 +29,6 @@ public class DiscordBotUtil {
     public static Role getRole(Guild guild, String roleId) {
         Role role = guild.getRoleById(roleId);
         if(role == null) throw new IllegalArgumentException("Can't retrieve role " + roleId + " from guild " + guild.getId());
-        System.out.println("Role:"+role.getId());
         return role;
     }
 
