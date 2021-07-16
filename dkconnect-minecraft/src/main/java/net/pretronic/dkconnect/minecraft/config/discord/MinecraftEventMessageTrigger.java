@@ -2,12 +2,14 @@ package net.pretronic.dkconnect.minecraft.config.discord;
 
 public class MinecraftEventMessageTrigger {
 
+    private final String name;
     private final String eventClass;
     private final String channelId;
     private final String message;
     private final String embedKey;
 
-    public MinecraftEventMessageTrigger(String eventClass, String channelId, String message, String embedKey) {
+    public MinecraftEventMessageTrigger(String name, String eventClass, String channelId, String message, String embedKey) {
+        this.name = name;
         this.eventClass = eventClass;
         this.channelId = channelId;
         this.message = message;
@@ -22,6 +24,10 @@ public class MinecraftEventMessageTrigger {
         }
     }
 
+    public String getEventClassName() {
+        return this.eventClass;
+    }
+
     public boolean isAvailable() {
         try {
             Class.forName(eventClass);
@@ -29,6 +35,10 @@ public class MinecraftEventMessageTrigger {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getChannelId() {

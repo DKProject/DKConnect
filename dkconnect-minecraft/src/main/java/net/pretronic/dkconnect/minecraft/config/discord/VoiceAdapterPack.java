@@ -70,7 +70,7 @@ public class VoiceAdapterPack {
             String channelId = voiceAdapterPack.getChannelId();
 
 
-            return new MinecraftEventMessageTrigger(eventClass, channelId, message, embedKey);
+            return new MinecraftEventMessageTrigger(voiceAdapterPack.getName(), eventClass, channelId, message, embedKey);
         }
     }
 
@@ -88,7 +88,7 @@ public class VoiceAdapterPack {
             String channelId = voiceAdapterPack.getChannelId();
 
 
-            return new MinecraftEventMessageTrigger(eventClass, channelId, message, embedKey);
+            return new MinecraftEventMessageTrigger(voiceAdapterPack.getName(), eventClass, channelId, message, embedKey);
         }
     }
 
@@ -106,7 +106,7 @@ public class VoiceAdapterPack {
             String channelId = voiceAdapterPack.getChannelId();
 
 
-            return new MinecraftEventMessageTrigger(eventClass, channelId, message, embedKey);
+            return new MinecraftEventMessageTrigger(voiceAdapterPack.getName(), eventClass, channelId, message, embedKey);
         }
     }
 }

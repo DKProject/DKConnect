@@ -56,6 +56,10 @@ public class DiscordGuildConfig {
         }
         if(getMinecraftEventMessageTriggers() != null) {
             for (MinecraftEventMessageTrigger messageTrigger : getMinecraftEventMessageTriggers()) {
+                if(!messageTrigger.isAvailable()) {
+                    plugin.getLogger().warn("[DKConnect] Pack " + messageTrigger.getName() + " is not available (Event:"+messageTrigger.getEventClassName()+")");
+                    continue;
+                }
 
                 McNative.getInstance().getLocal().getEventBus().subscribe(plugin, messageTrigger.getEventClass(), event -> {
                     VoiceAdapter adapter = plugin.getDKConnect().getVoiceAdapter(voiceAdapterName);
