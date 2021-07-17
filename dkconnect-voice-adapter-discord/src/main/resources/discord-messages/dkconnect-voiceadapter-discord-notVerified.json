@@ -2,7 +2,7 @@
   "content": null,
   "embeds": [
     {
-      "title": "{mention} Your account is not verified with an associated minecraft account",
+      "description": "{mention} Your account is not verified with an associated minecraft account",
       "color": null
     }
   ]
