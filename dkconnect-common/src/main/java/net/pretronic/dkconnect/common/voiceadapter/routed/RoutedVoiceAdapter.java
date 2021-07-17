@@ -80,6 +80,11 @@ public class RoutedVoiceAdapter implements VoiceAdapter {
     }
 
     @Override
+    public CompletableFuture<String> createTextChannel(String categoryId, String name, String[] allowedRoles, String[] allowedUserIds) {
+        return null;
+    }
+
+    @Override
     public void assignRole(Verification verification, String roleId) {
 
     }
