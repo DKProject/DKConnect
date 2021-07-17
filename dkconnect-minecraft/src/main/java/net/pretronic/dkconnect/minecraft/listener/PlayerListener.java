@@ -52,7 +52,6 @@ public class PlayerListener {
             if(chatSync.isEnabled()) {
                 Textable text = chatSync.getDiscordEmbedKey() != null ? voiceAdapter.getMessage(chatSync.getDiscordEmbedKey()) : new StringTextable(chatSync.getDiscordMessage());
                 voiceAdapter.sendMessage(chatSync.getDiscordChannelId(), text, VariableSet.create()
-                        .addDescribed("event", event)
                         .addDescribed("player", player)
                         .add("message", event.getMessage()));
             }

@@ -2,11 +2,11 @@
   "content": null,
   "embeds": [
     {
-      "description": "{event.message}",
+      "description": "{message}",
       "color": 3092790,
       "author": {
-        "name": "{event.player.name}",
-        "icon_url": "https://minotar.net/avatar/{event.player.uniqueId}/300.png"
+        "name": "{player.name}",
+        "icon_url": "https://minotar.net/avatar/{player.uniqueId}/300.png"
       }
     }
   ]
