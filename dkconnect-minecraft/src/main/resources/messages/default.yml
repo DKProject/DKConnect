@@ -42,4 +42,4 @@ messages:
   dkconnect.voiceadapter.discord.notification.join.body: '{event.player.name} has joined the server'
   dkconnect.voiceadapter.discord.notification.leave.body: '{event.player.name} has left the server'
 
-  dkconnect.chatSync.message: '<{player.name}> <message>'
+  dkconnect.chatSync.message: '<{player.name}> {message}'
