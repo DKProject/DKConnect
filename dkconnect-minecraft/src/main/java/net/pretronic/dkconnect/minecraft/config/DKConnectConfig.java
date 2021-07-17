@@ -9,4 +9,10 @@ public class DKConnectConfig {
 
     public static Map<String, CommandConfiguration> VERIFY_COMMANDS = Maps.of("discord", CommandConfiguration.name("verify"));
     public static Map<String, CommandConfiguration> UNVERIFY_COMMANDS = Maps.of("discord", CommandConfiguration.name("unverify"));
+
+    public static CommandConfiguration COMMAND_VERIFYINFO = CommandConfiguration.newBuilder()
+            .name("verifyInfo")
+            .aliases("vi")
+            .permission("dkconnect.command.verifyinfo")
+            .create();
 }

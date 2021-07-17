@@ -8,6 +8,7 @@ import net.pretronic.dkconnect.common.voiceadapter.routed.RoutedVoiceAdapterActi
 import net.pretronic.dkconnect.minecraft.commands.DKConnectCommand;
 import net.pretronic.dkconnect.minecraft.commands.UnverifyCommand;
 import net.pretronic.dkconnect.minecraft.commands.VerifyCommand;
+import net.pretronic.dkconnect.minecraft.commands.VerifyInfoCommand;
 import net.pretronic.dkconnect.minecraft.config.DKConnectConfig;
 import net.pretronic.dkconnect.minecraft.config.discord.DiscordGuildConfig;
 import net.pretronic.dkconnect.minecraft.config.discord.DiscordSharedConfig;
@@ -110,6 +111,7 @@ public class DKConnectPlugin extends MinecraftPlugin {
             getRuntime().getLocal().getCommandManager().registerCommand(new UnverifyCommand(this, entry.getValue(), dkConnect.getVoiceAdapterByVerificationSystemName(entry.getKey())));
         }
         getRuntime().getLocal().getCommandManager().registerCommand(new DKConnectCommand(this));
+        getRuntime().getLocal().getCommandManager().registerCommand(new VerifyInfoCommand(this, DKConnectConfig.COMMAND_VERIFYINFO));
     }
 
     private void registerVoiceAdapters(DefaultDKConnect dkConnect) {

@@ -9,12 +9,16 @@ messages:
   dkconnect.prefix: '&8» &eDKConnect &8|&f'
 
   dkconnect.error.onlyPlayer: '${dkconnect.prefix} &cThis command can only be executed as a player'
-  dkconnect.error.player.alreadyVerified: '${dkconnect.prefix} &cYou are already verified'
+  dkconnect.error.player.alreadyVerified: '${dkconnect.prefix} &cYou are already verified to &{verification.username}'
   dkconnect.error.player.openPendingVerification: '${dkconnect.prefix} &7You have already an open pending verification'
   dkconnect.error.player.notVerified: '${dkconnect.prefix} &cYou are not verified'
+  dkconnect.error.player.notFound: '${dkconnect.prefix} &cPlayer &e{name} &cnot found'
 
   dkconnect.command.verify: '${dkconnect.prefix} &7Your personal verification code is &e{pendingVerification.code}. &7Execute the command &e!verify {pendingVerification.code} to the &ePretronicBot'
   dkconnect.command.unverify: '${dkconnect.prefix} &7You are now unverified'
+  dkconnect.command.verifyInfo: '${dkconnect.prefix} &7Verifications for &e{player.displayName}
+  @for("verification" in {player.verifications},${dkconnect.command.verifyInfo.loop},"\n")'
+  dkconnect.command.verifyInfo.loop: ' &8- &e{verification.username} &8(&e{verification.userId}&8)'
 
   dkconnect.voiceadapter.discord.command.verifiy.usage.author.name: 'Wrong usage'
   dkconnect.voiceadapter.discord.command.verifiy.usage.author.url: 'https://www.paypal.com/pools/c/8aWrUZXUi6'

@@ -1,5 +1,6 @@
 package net.pretronic.dkconnect.minecraft.commands;
 
+import net.pretronic.dkconnect.api.player.Verification;
 import net.pretronic.dkconnect.api.voiceadapter.VoiceAdapter;
 import net.pretronic.dkconnect.api.player.DKConnectPlayer;
 import net.pretronic.dkconnect.api.player.PendingVerification;
@@ -31,8 +32,9 @@ public class VerifyCommand extends BasicCommand {
                 return;
             }
 
-            if(player.isVerified(voiceAdapter)) {
-                sender.sendMessage(Messages.ERROR_PLAYER_ALREADY_VERIFIED);
+            Verification verification = player.getVerification(voiceAdapter);
+            if(verification != null) {
+                sender.sendMessage(Messages.ERROR_PLAYER_ALREADY_VERIFIED, VariableSet.create().addDescribed("verification", verification));
                 return;
             }
             PendingVerification pendingVerification = player.verify(voiceAdapter);
