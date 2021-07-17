@@ -23,7 +23,7 @@ public class DiscordGuildConfig {
     private Collection<VoiceAdapterPack> packs = Arrays.asList(new VoiceAdapterPack("dkbans-notification-punishment", "1234"),
             new VoiceAdapterPack("join", "1234"),
             new VoiceAdapterPack("leave", "1234"));
-    private ChatSync chatSync = new ChatSync(true, "1234", null, "dkconnect.voiceadapter.discord.syncChat", "${dkconnect.chatSync.message}");
+    private ChatSync chatSync = new ChatSync(true, "1234", null, "dkconnect.voiceadapter.discord.syncChat", "dkconnect.chatSync.message");
 
     private transient Collection<MinecraftEventMessageTrigger> minecraftEventMessageTriggers;
 

@@ -28,7 +28,7 @@ public class DiscordListener {
                 DKConnectPlayer player = plugin.getDKConnect().getPlayerManager().getPlayerByVerificationUserId(voiceAdapter, event.getAuthor().getId());
                 ChatSync chatSync = guildConfig.getChatSync();
                 if(chatSync.isEnabled() && event.getChannel().getId().equals(chatSync.getDiscordChannelId())) {
-                    McNative.getInstance().getLocal().broadcast(Text.parse(chatSync.getMinecraftMessage()), VariableSet.create()
+                    McNative.getInstance().getLocal().broadcast(Text.ofMessageKey(chatSync.getMinecraftMessage()), VariableSet.create()
                             .addDescribed("event", event)
                             .addDescribed("player", player)
                             .add("message", event.getMessage().getContentRaw()));
