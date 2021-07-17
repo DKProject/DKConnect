@@ -135,8 +135,11 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
 
     @Override
     public CompletableFuture<String> createTextChannel(String categoryId, String name, String[] allowedRoles, String[] allowedUserIds) {
+        CompletableFuture<String> future = new CompletableFuture<>();
+
         Category category = DiscordBotUtil.getCategory(getGuild(), categoryId);
-        getGuild().createTextChannel(name, null).queue(channel -> {
+        getGuild().createTextChannel(name, category).queue(channel -> {
+            future.complete(channel.getId());
             if(allowedRoles != null) {
                 for (String roleId : allowedRoles) {
                     Role role = DiscordBotUtil.getRole(getGuild(), roleId);
@@ -152,7 +155,7 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
 
             }
         }, Throwable::printStackTrace);
-        return null;
+        return future;
     }
 
     @Override
