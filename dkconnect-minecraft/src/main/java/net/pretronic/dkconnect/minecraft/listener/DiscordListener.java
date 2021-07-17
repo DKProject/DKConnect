@@ -31,7 +31,10 @@ public class DiscordListener {
                     DKConnectPlayer player = plugin.getDKConnect().getPlayerManager().getPlayerByVerificationUserId(voiceAdapter, event.getAuthor().getId());
                     if(player == null) {
                         event.getMessage().delete().queue();
-                        DiscordBotUtil.sendMessage(event.getChannel(), null, voiceAdapter.getMessage("dkconnect.voiceadapter.discord.notVerified"), VariableSet.create());
+                        DiscordBotUtil.sendMessage(event.getChannel(), null,
+                                voiceAdapter.getMessage("dkconnect.voiceadapter.discord.notVerified"), VariableSet.create()
+                                        .addDescribed("event", event)
+                                        .addDescribed("mention", event.getAuthor().getAsMention()));
                         return;
                     }
                     McNative.getInstance().getLocal().broadcast(Text.ofMessageKey(chatSync.getMinecraftMessage()), VariableSet.create()
