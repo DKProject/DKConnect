@@ -1,9 +1,8 @@
 package net.pretronic.dkconnect.voiceadapter.discord;
 
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.ISnowflake;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.*;
 import net.pretronic.dkconnect.api.DKConnect;
 import net.pretronic.dkconnect.api.voiceadapter.StaticMessage;
 import net.pretronic.dkconnect.api.voiceadapter.VoiceAdapter;
@@ -132,6 +131,28 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
     @Override
     public CompletableFuture<StaticMessage> sendStaticMessage(String name, String channelId, Textable text, VariableSet variables) {
         return sendStaticMessage(name, channelId, null, text, variables);
+    }
+
+    @Override
+    public CompletableFuture<String> createTextChannel(String categoryId, String name, String[] allowedRoles, String[] allowedUserIds) {
+        Category category = DiscordBotUtil.getCategory(getGuild(), categoryId);
+        getGuild().createTextChannel(name, null).queue(channel -> {
+            if(allowedRoles != null) {
+                for (String roleId : allowedRoles) {
+                    Role role = DiscordBotUtil.getRole(getGuild(), roleId);
+                    channel.upsertPermissionOverride(role).setAllow(Permission.VIEW_CHANNEL, Permission.MESSAGE_READ).queue(ignored -> {}, Throwable::printStackTrace);
+                }
+            }
+            if(allowedUserIds != null) {
+                for (String userId : allowedUserIds) {
+                    getGuild().retrieveMemberById(userId).queue(member -> {
+                        channel.upsertPermissionOverride(member).setAllow(Permission.VIEW_CHANNEL, Permission.MESSAGE_READ).queue(ignored -> {}, Throwable::printStackTrace);
+                    }, Throwable::printStackTrace);
+                }
+
+            }
+        }, Throwable::printStackTrace);
+        return null;
     }
 
     @Override

@@ -32,6 +32,12 @@ public class DiscordBotUtil {
         return role;
     }
 
+    public static Category getCategory(Guild guild, String categoryId) {
+        Category category = guild.getCategoryById(categoryId);
+        if(category == null) throw new IllegalArgumentException("Can't retrieve category " + categoryId + " from guild " + guild.getId());
+        return category;
+    }
+
     public static Guild getGuild(DiscordVoiceAdapter voiceAdapter) {
         Guild guild = voiceAdapter.getJda().getGuildById(voiceAdapter.getGuildId());
         if(guild == null) throw new IllegalArgumentException("Can't retrieve guild " + voiceAdapter.getGuildId());
