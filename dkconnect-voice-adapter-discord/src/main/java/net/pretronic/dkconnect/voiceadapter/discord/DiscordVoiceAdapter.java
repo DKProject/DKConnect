@@ -159,6 +159,13 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
     }
 
     @Override
+    public void deleteTextChannel(String channelId) {
+        TextChannel channel = getGuild().getTextChannelById(channelId);
+        if(channel == null) return;
+        channel.delete().queue();
+    }
+
+    @Override
     public void assignRole(Verification verification, String roleId) {
         String userId = verification.getUserId();
 

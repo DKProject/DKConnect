@@ -85,6 +85,11 @@ public class RoutedVoiceAdapter implements VoiceAdapter {
     }
 
     @Override
+    public void deleteTextChannel(String channelId) {
+
+    }
+
+    @Override
     public void assignRole(Verification verification, String roleId) {
 
     }

@@ -46,6 +46,8 @@ public interface VoiceAdapter extends ObjectOwner {
 
     CompletableFuture<String> createTextChannel(String categoryId, String name, String[] allowedRoles, String[] allowedUserIds);
 
+    void deleteTextChannel(String channelId);
+
 
     void assignRole(Verification verification, String roleId);
 
