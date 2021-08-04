@@ -89,11 +89,6 @@ public class DKConnectPlugin extends MinecraftPlugin {
         registerVoiceAdapters(dkConnect);
         registerCommands(dkConnect);
 
-        getLogger().info("DKConnect started successfully");
-    }
-
-    @Lifecycle(state = LifecycleState.BOOTSTRAP)
-    public void onBootstrap(LifecycleState state) {
         McNative.getInstance().getScheduler().createTask(this)
                 .delay(3, TimeUnit.SECONDS)
                 .execute(()-> {
@@ -101,6 +96,13 @@ public class DKConnectPlugin extends MinecraftPlugin {
                         guildConfig.init(this);
                     }
                 });
+
+        getLogger().info("DKConnect started successfully");
+    }
+
+    @Lifecycle(state = LifecycleState.BOOTSTRAP)
+    public void onBootstrap(LifecycleState state) {
+
     }
 
     private void registerCommands(DefaultDKConnect dkConnect) {
