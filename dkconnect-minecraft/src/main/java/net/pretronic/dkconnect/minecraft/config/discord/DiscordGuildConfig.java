@@ -64,7 +64,6 @@ public class DiscordGuildConfig {
                 }
                 plugin.getLogger().info("Registering pack " + messageTrigger.getName() + " for guild " + guildId);
                 McNative.getInstance().getLocal().getEventBus().subscribe(plugin, messageTrigger.getEventClass(), event -> {
-                    System.out.println("Pack " + messageTrigger.getName() + " event");
                     VoiceAdapter adapter = plugin.getDKConnect().getVoiceAdapter(voiceAdapterName);
 
                     Textable text = messageTrigger.getEmbedKey() != null ? adapter.getMessage(messageTrigger.getEmbedKey()) : new StringTextable(messageTrigger.getMessage());
