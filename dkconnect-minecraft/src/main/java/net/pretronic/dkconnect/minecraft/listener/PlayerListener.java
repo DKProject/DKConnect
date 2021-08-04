@@ -7,6 +7,7 @@ import net.pretronic.dkconnect.minecraft.DKConnectPlugin;
 import net.pretronic.dkconnect.minecraft.Util;
 import net.pretronic.dkconnect.minecraft.config.discord.ChatSync;
 import net.pretronic.dkconnect.minecraft.config.discord.DiscordGuildConfig;
+import net.pretronic.libraries.event.EventPriority;
 import net.pretronic.libraries.event.Listener;
 import net.pretronic.libraries.message.StringTextable;
 import net.pretronic.libraries.message.Textable;
@@ -42,8 +43,9 @@ public class PlayerListener {
         }
     }
 
-    @Listener
+    @Listener(priority = EventPriority.HIGHEST)
     public void onChat(MinecraftPlayerChatEvent event) {
+        if(event.isCancelled()) return;
         for (DiscordGuildConfig guildConfig : dkConnectPlugin.getGuildConfigs()) {
 
             VoiceAdapter voiceAdapter = dkConnectPlugin.getDKConnect().getVoiceAdapter(guildConfig.getVoiceAdapterName());
