@@ -119,6 +119,7 @@ public class DKConnectPlugin extends MinecraftPlugin {
             net.dv8tion.jda.api.JDA jda;
             EventBus eventBus = McNative.getInstance().getLocal().getEventBus();
             try {
+                getLogger().info("Starting jda bot instance");
                 jda = net.dv8tion.jda.api.JDABuilder.create(DiscordSharedConfig.BOT_TOKEN, Arrays.asList(net.dv8tion.jda.api.requests.GatewayIntent.values()))
                         .setAutoReconnect(true)
                         .build();
@@ -182,6 +183,7 @@ public class DKConnectPlugin extends MinecraftPlugin {
     }
 
     private Collection<DiscordGuildConfig> loadDiscordGuildConfigs() {
+        getLogger().info("Loading discord guild configs");
         Collection<DiscordGuildConfig> guildConfigs = new ArrayList<>();
 
         File location = new File("plugins/DKConnect/discord-guilds/");
@@ -192,6 +194,7 @@ public class DKConnectPlugin extends MinecraftPlugin {
             DocumentFileType.YAML.getWriter().write(defaultGuildConfig, data);
         }
         FileUtil.processFilesHierarchically(location, file -> guildConfigs.add(DocumentFileType.YAML.getReader().read(file).getAsObject(DiscordGuildConfig.class)));
+        getLogger().info("Found " + guildConfigs.size() + " discord guild configs");
         return guildConfigs;
     }
 
