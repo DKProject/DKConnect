@@ -10,5 +10,7 @@ public interface PendingVerification {
 
     long getTime();
 
+    boolean isValid();
+
     Verification complete(String userId, String username);
 }
