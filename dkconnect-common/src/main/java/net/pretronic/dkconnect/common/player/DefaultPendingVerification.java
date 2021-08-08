@@ -34,19 +34,16 @@ public class DefaultPendingVerification implements PendingVerification {
 
     @Override
     public VoiceAdapter getVoiceAdapter() {
-        checkValid();
         return this.voiceAdapter;
     }
 
     @Override
     public String getCode() {
-        checkValid();
         return this.code;
     }
 
     @Override
     public long getTime() {
-        checkValid();
         return this.time;
     }
 
