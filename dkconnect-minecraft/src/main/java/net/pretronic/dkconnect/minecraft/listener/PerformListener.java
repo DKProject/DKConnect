@@ -37,7 +37,7 @@ public class PerformListener {
             long lifetime = DiscordSharedConfig.PENDING_VERIFICATION_LIFETIME_TIME;
             long created = event.getVerification().getTime();
             boolean isValid = (System.currentTimeMillis()-created)<lifetime;
-            event.setValid(isValid);
+            //event.setValid(isValid);
         }
     }
 }
