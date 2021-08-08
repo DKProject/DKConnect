@@ -55,7 +55,8 @@ public class DefaultPendingVerificationValidationCheckEvent implements PendingVe
         this.valid = valid;
     }
 
-    private VoiceAdapter getVoiceAdapter() {
+    @Override
+    public VoiceAdapter getVoiceAdapter() {
         if(this.voiceAdapter == null) {
             this.voiceAdapter = this.dkConnect.getVoiceAdapter(voiceAdapterName);
         }

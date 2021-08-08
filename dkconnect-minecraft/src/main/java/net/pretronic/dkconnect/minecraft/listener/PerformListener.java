@@ -33,7 +33,7 @@ public class PerformListener {
 
     @Listener
     public void onPendingVerificationValidationCheck(PendingVerificationValidationCheckEvent event) {
-        if(event.getVerification().getVoiceAdapter().getType().equals(VoiceAdapterType.DISCORD)) {
+        if(event.getVoiceAdapter().getType().equals(VoiceAdapterType.DISCORD)) {
             long lifetime = DiscordSharedConfig.PENDING_VERIFICATION_LIFETIME_TIME;
             long created = event.getVerification().getTime();
             boolean isValid = (System.currentTimeMillis()-created)<lifetime;
