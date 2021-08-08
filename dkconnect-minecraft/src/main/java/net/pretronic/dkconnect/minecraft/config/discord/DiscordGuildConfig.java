@@ -48,7 +48,9 @@ public class DiscordGuildConfig {
     }
 
     public void init(DKConnectPlugin plugin) {
+        plugin.getLogger().info("Initializing guild config " + guildId);
         minecraftEventMessageTriggers = new ArrayList<>();
+        plugin.getLogger().info("Found " + packs + " packs (Guild:"+guildId+")");
         if(packs != null) {
             for (VoiceAdapterPack pack : packs) {
                 minecraftEventMessageTriggers.add(pack.toTrigger());
@@ -60,7 +62,7 @@ public class DiscordGuildConfig {
                     plugin.getLogger().warn("Pack " + messageTrigger.getName() + " is not available (Event:"+messageTrigger.getEventClassName()+")");
                     continue;
                 }
-
+                plugin.getLogger().info("Registering pack " + messageTrigger.getName() + " for guild " + guildId);
                 McNative.getInstance().getLocal().getEventBus().subscribe(plugin, messageTrigger.getEventClass(), event -> {
                     VoiceAdapter adapter = plugin.getDKConnect().getVoiceAdapter(voiceAdapterName);
 
@@ -68,6 +70,7 @@ public class DiscordGuildConfig {
 
                     adapter.sendMessage(messageTrigger.getChannelId(), text, VariableSet.create().addDescribed("event", event));
                 });
+                plugin.getLogger().info("Registered pack " + messageTrigger.getName() + " for guild " + guildId);
             }
         }
     }
