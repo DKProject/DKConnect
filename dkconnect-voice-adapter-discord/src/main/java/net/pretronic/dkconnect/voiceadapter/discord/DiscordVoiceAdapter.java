@@ -26,6 +26,7 @@ import net.pretronic.libraries.utility.map.Triple;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.*;
@@ -35,6 +36,8 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class DiscordVoiceAdapter implements VoiceAdapter {
+
+    private static File DISCORD_MESSAGES_LOCATION = new File("plugins/DKConnect/discord-messages/");
 
     private final DKConnect dkConnect;
     private final String name;
@@ -89,6 +92,16 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
         DiscordMessage message = this.messages.get(key);
         if(message == null) return new StringTextable("The message "+rawKey+" was not found.");
         return message;
+    }
+
+    @Override
+    public void importMessage(String key, InputStream inputStream) {
+        try {
+            String fileName = key.replace(".", "-")+".json";
+            Files.copy(inputStream, Paths.get(DISCORD_MESSAGES_LOCATION.getPath()+"/"+fileName));
+        } catch (IOException e) {
+            throw new RuntimeException("Can't extract message file from jar", e);
+        }
     }
 
     @Override
@@ -224,22 +237,20 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
 
     private Map<String, DiscordMessage> loadMessages() {
         Map<String, DiscordMessage> messages = new HashMap<>();
-        File location = new File("plugins/DKConnect/discord-messages/");
-        if(!location.exists()) {
-            location.mkdirs();
+
+        if(!DISCORD_MESSAGES_LOCATION.exists()) {
+            DISCORD_MESSAGES_LOCATION.mkdirs();
             for (Iterator<Path> iterator = getDirectoryFiles("/discord-messages").iterator(); iterator.hasNext();){
                 Path child = iterator.next();
                 if(Files.isRegularFile(child)) {
-                    try {
-                        Files.copy(DiscordVoiceAdapter.class.getResourceAsStream(child.toString()), Paths.get(location.getPath()+"/"+child.getFileName()));
-                    } catch (IOException e) {
-                        throw new RuntimeException("Can't extract message file from jar", e);
-                    }
+                    //Files.copy(DiscordVoiceAdapter.class.getResourceAsStream(child.toString()), Paths.get(DISCORD_MESSAGES_LOCATION.getPath()+"/"+child.getFileName()));
+                    importMessage(child.getFileName().toString(), DiscordVoiceAdapter.class.getResourceAsStream(child.toString()));
+                    System.out.println(child.getFileName().toString());
                 }
             }
         }
 
-        FileUtil.processFilesHierarchically(location, file -> {
+        FileUtil.processFilesHierarchically(DISCORD_MESSAGES_LOCATION, file -> {
             try {
                 String key = file.getName().split("\\.")[0].replace("-", ".");
                 Document document = DocumentFileType.JSON.getReader().read(file);

@@ -9,6 +9,7 @@ import net.pretronic.libraries.message.bml.variable.VariableSet;
 import net.pretronic.libraries.message.language.Language;
 import net.pretronic.libraries.utility.interfaces.ObjectOwner;
 
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
@@ -28,6 +29,8 @@ public interface VoiceAdapter extends ObjectOwner {
     EventBus getEventBus();
 
     Textable getMessage(String key);
+
+    void importMessage(String key, InputStream inputStream);
 
 
     void sendMessage(Verification verification, Textable text, VariableSet variables);
