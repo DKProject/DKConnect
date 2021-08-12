@@ -11,6 +11,7 @@ import net.pretronic.libraries.message.Textable;
 import net.pretronic.libraries.message.bml.variable.VariableSet;
 import net.pretronic.libraries.message.language.Language;
 
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
@@ -47,6 +48,11 @@ public class RoutedVoiceAdapter implements VoiceAdapter {
     @Override
     public Textable getMessage(String key) {
         throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void importMessage(String key, InputStream inputStream) {
+
     }
 
     @Override

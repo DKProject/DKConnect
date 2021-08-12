@@ -3,7 +3,6 @@ package net.pretronic.dkconnect.minecraft;
 import net.pretronic.dkconnect.api.DKConnect;
 import net.pretronic.dkconnect.api.player.DKConnectPlayer;
 import net.pretronic.dkconnect.common.DefaultDKConnect;
-import net.pretronic.dkconnect.common.voiceadapter.routed.RoutedVoiceAdapter;
 import net.pretronic.dkconnect.common.voiceadapter.routed.RoutedVoiceAdapterAction;
 import net.pretronic.dkconnect.minecraft.commands.DKConnectCommand;
 import net.pretronic.dkconnect.minecraft.commands.UnverifyCommand;
