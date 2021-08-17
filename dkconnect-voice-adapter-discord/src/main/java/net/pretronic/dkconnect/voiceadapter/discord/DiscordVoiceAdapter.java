@@ -22,6 +22,7 @@ import net.pretronic.libraries.message.Textable;
 import net.pretronic.libraries.message.bml.variable.VariableSet;
 import net.pretronic.libraries.message.language.Language;
 import net.pretronic.libraries.utility.Iterators;
+import net.pretronic.libraries.utility.StringUtil;
 import net.pretronic.libraries.utility.Validate;
 import net.pretronic.libraries.utility.annonations.Internal;
 import net.pretronic.libraries.utility.annonations.Nullable;
@@ -235,8 +236,8 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
             for (Iterator<Path> iterator = getDirectoryFiles("/discord-messages").iterator(); iterator.hasNext();){
                 Path child = iterator.next();
                 if(Files.isRegularFile(child)) {
-                    //Files.copy(DiscordVoiceAdapter.class.getResourceAsStream(child.toString()), Paths.get(DISCORD_MESSAGES_LOCATION.getPath()+"/"+child.getFileName()));
-                    importMessage(child.getFileName().toString(), DiscordVoiceAdapter.class.getResourceAsStream(child.toString()));
+                    importMessage(StringUtil.split(child.getFileName().toString(), '.')[0],
+                            DiscordVoiceAdapter.class.getResourceAsStream(child.toString()));
                     System.out.println(child.getFileName().toString());
                 }
             }
@@ -245,7 +246,7 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
         AtomicInteger messagesCount = new AtomicInteger();
         FileUtil.processFilesHierarchically(DISCORD_MESSAGES_LOCATION, file -> {
             try {
-                String key = file.getName().split("\\.")[0].replace("-", ".");
+                String key = StringUtil.split(file.getName(), '.')[0].replace("-", ".");
                 Document document = DocumentFileType.JSON.getReader().read(file);
                 DiscordMessage message = document.getAsObject(DiscordMessage.class);
                 message.setVoiceAdapter(this);
