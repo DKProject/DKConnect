@@ -36,6 +36,7 @@ import java.net.URISyntaxException;
 import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -162,6 +163,9 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
                 this.channels.add(channel);
             }
         }
+        if(channel == null) {
+            throw new IllegalArgumentException("Can't retrieve text channel " + id);
+        }
         return (TextChannel) channel;
     }
 
@@ -226,6 +230,7 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
         Map<String, DiscordMessage> messages = new HashMap<>();
 
         if(!DISCORD_MESSAGES_LOCATION.exists()) {
+            this.dkConnect.getLogger().info("("+getName()+") Extracting default message");
             DISCORD_MESSAGES_LOCATION.mkdirs();
             for (Iterator<Path> iterator = getDirectoryFiles("/discord-messages").iterator(); iterator.hasNext();){
                 Path child = iterator.next();
@@ -236,7 +241,8 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
                 }
             }
         }
-
+        this.dkConnect.getLogger().info("("+getName()+") Importing messages");
+        AtomicInteger messagesCount = new AtomicInteger();
         FileUtil.processFilesHierarchically(DISCORD_MESSAGES_LOCATION, file -> {
             try {
                 String key = file.getName().split("\\.")[0].replace("-", ".");
@@ -244,11 +250,12 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
                 DiscordMessage message = document.getAsObject(DiscordMessage.class);
                 message.setVoiceAdapter(this);
                 messages.put(key, message);
+                this.dkConnect.getLogger().info("("+getName()+") Loaded message " + key);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         });
-
+        this.dkConnect.getLogger().info("("+getName()+") "+ messagesCount.get() + " messages loaded");
         return messages;
     }
 
