@@ -101,7 +101,7 @@ public class DefaultDKConnectPlayer implements DKConnectPlayer {
 
     @Override
     public void sendMessage(VoiceAdapter voiceAdapter, Textable text) {
-        voiceAdapter.sendMessage(getVerificationInternal(voiceAdapter), text, VariableSet.create());
+        voiceAdapter.sendPrivateMessage(getVerificationInternal(voiceAdapter), text, VariableSet.create());
     }
 
     @Override

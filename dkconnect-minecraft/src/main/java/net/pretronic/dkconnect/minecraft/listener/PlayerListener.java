@@ -53,12 +53,10 @@ public class PlayerListener {
             ChatSync chatSync = guildConfig.getChatSync();
             if(chatSync.isEnabled()) {
                 Textable text = chatSync.getDiscordEmbedKey() != null ? voiceAdapter.getMessage(chatSync.getDiscordEmbedKey()) : new StringTextable(chatSync.getDiscordMessage());
-                voiceAdapter.sendMessage(chatSync.getDiscordChannelId(), text, VariableSet.create()
+                chatSync.sendMessage(text, VariableSet.create()
                         .addDescribed("player", player)
-                        .add("message", event.getMessage()));
+                        .add("message", text));
             }
-
         }
     }
-
 }

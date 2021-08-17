@@ -1,4 +1,4 @@
-package net.pretronic.dkconnect.api;
+package net.pretronic.dkconnect.api.voiceadapter;
 
 public class VoiceAdapterType {
 

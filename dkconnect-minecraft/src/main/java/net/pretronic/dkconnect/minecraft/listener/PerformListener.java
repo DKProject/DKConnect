@@ -1,6 +1,6 @@
 package net.pretronic.dkconnect.minecraft.listener;
 
-import net.pretronic.dkconnect.api.VoiceAdapterType;
+import net.pretronic.dkconnect.api.voiceadapter.VoiceAdapterType;
 import net.pretronic.dkconnect.api.event.verification.pending.PendingVerificationValidationCheckEvent;
 import net.pretronic.dkconnect.api.event.verification.unverify.UnverifiedEvent;
 import net.pretronic.dkconnect.api.event.verification.verify.VerifiedEvent;

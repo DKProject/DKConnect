@@ -49,6 +49,12 @@ public class DiscordMessage implements Textable {
         return future;
     }
 
+    public CompletableFuture<Message> edit(MessageChannel channel, String messageId, Language language, VariableSet variables) {
+        CompletableFuture<Message> future = new CompletableFuture<>();
+        channel.editMessageById(messageId, build(language, variables)).queue(future::complete, Throwable::printStackTrace);
+        return future;
+    }
+
     public Message build(Language language, VariableSet variables) {
         MessageBuilder builder = new MessageBuilder();
         if(this.content != null) {
