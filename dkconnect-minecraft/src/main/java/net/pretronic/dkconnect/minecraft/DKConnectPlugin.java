@@ -19,19 +19,15 @@ import net.pretronic.dkconnect.voiceadapter.discord.MappedEventManager;
 import net.pretronic.libraries.command.command.configuration.CommandConfiguration;
 import net.pretronic.libraries.document.Document;
 import net.pretronic.libraries.document.type.DocumentFileType;
-import net.pretronic.libraries.event.DefaultEventBus;
 import net.pretronic.libraries.event.EventBus;
 import net.pretronic.libraries.message.MessageProvider;
 import net.pretronic.libraries.plugin.lifecycle.Lifecycle;
 import net.pretronic.libraries.plugin.lifecycle.LifecycleState;
-import net.pretronic.libraries.utility.annonations.Internal;
 import net.pretronic.libraries.utility.io.FileUtil;
 import org.mcnative.licensing.context.platform.McNativeLicenseIntegration;
 import org.mcnative.licensing.exceptions.CloudNotCheckoutLicenseException;
 import org.mcnative.licensing.exceptions.LicenseNotValidException;
 import org.mcnative.runtime.api.McNative;
-import org.mcnative.runtime.api.network.NetworkIdentifier;
-import org.mcnative.runtime.api.network.messaging.Messenger;
 import org.mcnative.runtime.api.plugin.MinecraftPlugin;
 
 import javax.security.auth.login.LoginException;
@@ -40,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class DKConnectPlugin extends MinecraftPlugin {
@@ -67,7 +62,7 @@ public class DKConnectPlugin extends MinecraftPlugin {
             return;
         }
 
-        DefaultDKConnect dkConnect = new DefaultDKConnect(getRuntime().getLocal().getEventBus(), getDatabaseOrCreate(),
+        DefaultDKConnect dkConnect = new DefaultDKConnect(getRuntime().getLocal().getEventBus(), getLogger(), getDatabaseOrCreate(),
                 playerId -> McNative.getInstance().getPlayerManager().getPlayer(playerId).getLanguage());
 
         this.dkConnect = dkConnect;
