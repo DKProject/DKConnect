@@ -105,6 +105,12 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
         try {
             String fileName = key.replace(".", "-")+".json";
             Files.copy(inputStream, Paths.get(DISCORD_MESSAGES_LOCATION.getPath()+"/"+fileName));
+
+            Document document = DocumentFileType.JSON.getReader().read(inputStream);
+            DiscordMessage message = document.getAsObject(DiscordMessage.class);
+            message.setVoiceAdapter(this);
+            messages.put(key, message);
+            this.dkConnect.getLogger().info("("+getName()+") Imported message " + key);
         } catch (IOException e) {
             throw new RuntimeException("Can't extract message file from jar", e);
         }
@@ -236,9 +242,14 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
             for (Iterator<Path> iterator = getDirectoryFiles("/discord-messages").iterator(); iterator.hasNext();){
                 Path child = iterator.next();
                 if(Files.isRegularFile(child)) {
-                    importMessage(StringUtil.split(child.getFileName().toString(), '.')[0],
-                            DiscordVoiceAdapter.class.getResourceAsStream(child.toString()));
-                    System.out.println(child.getFileName().toString());
+                    String key = StringUtil.split(child.getFileName().toString(), '.')[0];
+
+                    String fileName = key.replace(".", "-")+".json";
+                    try {
+                        Files.copy(DiscordVoiceAdapter.class.getResourceAsStream(child.toString()), Paths.get(DISCORD_MESSAGES_LOCATION.getPath()+"/"+fileName));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         }
