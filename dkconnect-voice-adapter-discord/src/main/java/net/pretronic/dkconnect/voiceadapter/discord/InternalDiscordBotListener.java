@@ -74,7 +74,7 @@ public class InternalDiscordBotListener {
                            @Override
                            public CompletableFuture<Boolean> removeReaction() {
                                CompletableFuture<Boolean> future = new CompletableFuture<>();
-                               event.getReaction().removeReaction().queue(unused -> future.complete(true), throwable -> future.complete(false));
+                               event.getReaction().removeReaction(event.getUser()).queue(unused -> future.complete(true), throwable -> future.complete(false));
                                return future;
                            }
                        });
