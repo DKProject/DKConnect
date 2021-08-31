@@ -104,9 +104,10 @@ public class DiscordEmoji implements Emoji {
     @Override
     public boolean equals(Object obj) {
         if(this == obj) return true;
-        System.out.println("Equals check " + emoteName + ":" + emoteId + ":" + unicode);
+
         if(obj instanceof DiscordEmoji) {
             DiscordEmoji other = (DiscordEmoji) obj;
+            System.out.println("Equals check " + emoteName + ":" + emoteId + ":" + unicode + "|" + other.emoteName + ":" + other.emoteId + ":" + other.unicode);
             if(emoteId > 0 && other.emoteId == emoteId) return true;
             if(emoteName != null && other.emoteName.equalsIgnoreCase(emoteName)) return true;
             return unicode != null && unicode.equals(other.unicode);
