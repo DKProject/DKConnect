@@ -107,6 +107,7 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
             Files.copy(inputStream, Paths.get(DISCORD_MESSAGES_LOCATION.getPath()+"/"+fileName));
 
             Document document = DocumentFileType.JSON.getReader().read(inputStream);
+            System.out.println(DocumentFileType.JSON.getWriter().write(document, true));
             DiscordMessage message = document.getAsObject(DiscordMessage.class);
             message.setVoiceAdapter(this);
             messages.put(key, message);
