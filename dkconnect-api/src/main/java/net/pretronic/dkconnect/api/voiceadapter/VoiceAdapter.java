@@ -33,6 +33,8 @@ public interface VoiceAdapter extends ObjectOwner {
 
     void importMessage(String key, InputStream inputStream);
 
+    Emoji parseEmoji(String value);
+
 
     CompletableFuture<Message> sendPrivateMessage(Verification verification, Textable text, VariableSet variables);
 

@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.pretronic.dkconnect.api.DKConnect;
+import net.pretronic.dkconnect.api.voiceadapter.Emoji;
 import net.pretronic.dkconnect.api.voiceadapter.Message;
 import net.pretronic.dkconnect.api.voiceadapter.VoiceAdapter;
 import net.pretronic.dkconnect.api.voiceadapter.VoiceAdapterType;
@@ -107,7 +108,6 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
             Files.copy(inputStream, Paths.get(DISCORD_MESSAGES_LOCATION.getPath()+"/"+fileName));
 
             Document document = DocumentFileType.JSON.getReader().read(inputStream);
-            System.out.println(DocumentFileType.JSON.getWriter().write(document, true));
             DiscordMessage message = document.getAsObject(DiscordMessage.class);
             message.setVoiceAdapter(this);
             messages.put(key, message);
@@ -115,6 +115,11 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
         } catch (IOException e) {
             throw new RuntimeException("Can't extract message file from jar", e);
         }
+    }
+
+    @Override
+    public Emoji parseEmoji(String value) {
+        return new DiscordEmoji(value);
     }
 
     @Override

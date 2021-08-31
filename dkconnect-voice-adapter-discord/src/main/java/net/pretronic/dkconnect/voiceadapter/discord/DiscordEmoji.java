@@ -1,9 +1,11 @@
 package net.pretronic.dkconnect.voiceadapter.discord;
 
+import com.vdurmont.emoji.EmojiManager;
 import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageReaction;
 import net.pretronic.dkconnect.api.voiceadapter.Emoji;
+import net.pretronic.libraries.utility.GeneralUtil;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -14,6 +16,25 @@ public class DiscordEmoji implements Emoji {
 
     private final String emoteName;
     private final long emoteId;
+
+    public DiscordEmoji(String value) {
+        if(GeneralUtil.isNaturalNumber(value)) {
+            this.emoteId = Long.parseLong(value);
+
+            this.emoteName = null;
+            this.unicode = null;
+        } else if(EmojiManager.isEmoji(value)) {
+            this.unicode = value;
+
+            this.emoteName = null;
+            this.emoteId = 0;
+        } else {
+            this.emoteName = value;
+
+            this.unicode = null;
+            this.emoteId = 0;
+        }
+    }
 
     public DiscordEmoji(String unicode, String emoteName, long emoteId) {
         this.unicode = unicode;
