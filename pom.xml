@@ -7,7 +7,7 @@
     <groupId>net.pretronic.dkconnect</groupId>
     <artifactId>DKConnect</artifactId>
     <packaging>pom</packaging>
-    <version>1.2.10.55-SNAPSHOT</version>
+    <version>1.2.11.56-SNAPSHOT</version>
     <modules>
         <module>dkconnect-api</module>
         <module>dkconnect-common</module>
