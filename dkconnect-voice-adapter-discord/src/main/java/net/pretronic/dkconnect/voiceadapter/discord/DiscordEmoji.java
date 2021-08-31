@@ -65,21 +65,32 @@ public class DiscordEmoji implements Emoji {
     public CompletableFuture<Boolean> addReaction(Message message) {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
         if(this.unicode != null) {
-            message.addReaction(this.unicode).queue(unused -> future.complete(true), throwable -> future.complete(false));
+            message.addReaction(this.unicode).queue(unused -> future.complete(true), throwable -> {
+                throwable.printStackTrace();
+                future.complete(false);
+            });
         } else if(this.emoteId > 0) {
             Emote emote = message.getGuild().getEmoteById(this.emoteId);
             if(emote == null) {
+                System.out.println("Emote by id is null");
                 future.complete(false);
             } else {
-                message.addReaction(emote).queue(unused -> future.complete(true), throwable -> future.complete(false));
+                message.addReaction(emote).queue(unused -> future.complete(true), throwable -> {
+                    throwable.printStackTrace();
+                    future.complete(false);
+                });
             }
         } else if(this.emoteName != null) {
             List<Emote> emotes = message.getGuild().getEmotesByName(this.emoteName, true);
             if(emotes.isEmpty()) {
+                System.out.println("Emotes empty");
                 future.complete(false);
             } else {
                 for (Emote emote : message.getGuild().getEmotesByName(this.emoteName, true)) {
-                    message.addReaction(emote).queue(unused -> future.complete(true), throwable -> future.complete(false));
+                    message.addReaction(emote).queue(unused -> future.complete(true), throwable -> {
+                        throwable.printStackTrace();
+                        future.complete(false);
+                    });
                     future.complete(true);
                     break;
                 }
