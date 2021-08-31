@@ -100,4 +100,16 @@ public class DiscordEmoji implements Emoji {
         }
         return future;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj) return true;
+        if(obj instanceof DiscordEmoji) {
+            DiscordEmoji other = (DiscordEmoji) obj;
+            if(emoteId > 0 && other.emoteId == emoteId) return true;
+            if(emoteName != null && other.emoteName.equalsIgnoreCase(emoteName)) return true;
+            return unicode != null && unicode.equals(other.unicode);
+        }
+        return false;
+    }
 }
