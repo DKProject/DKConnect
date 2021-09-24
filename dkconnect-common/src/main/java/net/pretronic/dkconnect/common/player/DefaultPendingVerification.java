@@ -81,8 +81,6 @@ public class DefaultPendingVerification implements PendingVerification {
 
         delete();
 
-        this.player.removePendingVerification(this);
-
         if(alreadyVerifiedPlayer != null) {
             alreadyVerifiedPlayer.getVerification(this.voiceAdapter).unverify();
         }
@@ -97,6 +95,7 @@ public class DefaultPendingVerification implements PendingVerification {
                 .where("PlayerId", player.getId())
                 .where("VoiceAdapterName", voiceAdapter.getVerificationSystemName())
                 .execute();
+        this.player.removePendingVerification(this);
     }
 
     private void checkValid() {
