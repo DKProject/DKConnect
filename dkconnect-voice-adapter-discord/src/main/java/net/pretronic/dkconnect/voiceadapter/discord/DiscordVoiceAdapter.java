@@ -4,11 +4,10 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.pretronic.dkconnect.api.DKConnect;
+import net.pretronic.dkconnect.api.voiceadapter.*;
+import net.pretronic.dkconnect.api.player.Verification;
 import net.pretronic.dkconnect.api.voiceadapter.Emoji;
 import net.pretronic.dkconnect.api.voiceadapter.Message;
-import net.pretronic.dkconnect.api.voiceadapter.VoiceAdapter;
-import net.pretronic.dkconnect.api.voiceadapter.VoiceAdapterType;
-import net.pretronic.dkconnect.api.player.Verification;
 import net.pretronic.dkconnect.api.voiceadapter.channel.Channel;
 import net.pretronic.dkconnect.api.voiceadapter.channel.TextChannel;
 import net.pretronic.dkconnect.voiceadapter.discord.channel.DiscordTextChannel;
@@ -135,6 +134,11 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
         }, Throwable::printStackTrace);
 
         return future;
+    }
+
+    @Override
+    public CompletableFuture<Message> sendPrivateMessage(VoiceAdapterUser user, Textable text, VariableSet variables) {
+        return null;
     }
 
     @Override

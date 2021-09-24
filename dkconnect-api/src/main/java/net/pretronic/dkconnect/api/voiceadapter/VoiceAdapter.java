@@ -38,6 +38,8 @@ public interface VoiceAdapter extends ObjectOwner {
 
     CompletableFuture<Message> sendPrivateMessage(Verification verification, Textable text, VariableSet variables);
 
+    CompletableFuture<Message> sendPrivateMessage(VoiceAdapterUser user, Textable text, VariableSet variables);
+
 
     CompletableFuture<TextChannel> createTextChannel(@Nullable String categoryId, String name, String[] allowedRoles, String[] allowedUserIds);
 
