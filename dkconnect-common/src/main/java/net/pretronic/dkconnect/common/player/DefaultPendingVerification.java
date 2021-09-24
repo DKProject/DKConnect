@@ -95,10 +95,6 @@ public class DefaultPendingVerification implements PendingVerification {
                 .where("PlayerId", player.getId())
                 .where("VoiceAdapterName", voiceAdapter.getVerificationSystemName())
                 .execute();
-        System.out.println("delete it");
-        System.out.println(player.getId());
-        System.out.println(voiceAdapter.getVerificationSystemName());
-        System.out.println("---");
         this.player.removePendingVerification(this);
     }
 
