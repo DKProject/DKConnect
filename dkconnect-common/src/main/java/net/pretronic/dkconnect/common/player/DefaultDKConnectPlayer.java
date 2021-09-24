@@ -72,8 +72,9 @@ public class DefaultDKConnectPlayer implements DKConnectPlayer {
         Validate.notNull(voiceAdapter);
         PendingVerification pendingVerification = Iterators.findOne(getOrLoadPendingVerifications(), pendingVerification0 -> pendingVerification0.getVoiceAdapter().equals(voiceAdapter));
         System.out.println(pendingVerification);
+        if(pendingVerification != null) System.out.println(pendingVerification.isValid());
         if(pendingVerification != null && !pendingVerification.isValid()) {
-            System.out.println(pendingVerification.isValid());
+
             pendingVerification.delete();
             return null;
         }
