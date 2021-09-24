@@ -79,10 +79,7 @@ public class DefaultPendingVerification implements PendingVerification {
 
         this.player.addVerification(verification);
 
-        this.dkConnect.getStorage().getPlayerPendingVerifications().delete()
-                .where("PlayerId", player.getId())
-                .where("VoiceAdapterName", voiceAdapter.getVerificationSystemName())
-                .execute();
+        delete();
 
         this.player.removePendingVerification(this);
 
@@ -92,6 +89,14 @@ public class DefaultPendingVerification implements PendingVerification {
 
         this.dkConnect.getEventBus().callEvent(VerifiedEvent.class, new DefaultVerifiedEvent(dkConnect, player, verification));
         return verification;
+    }
+
+    @Override
+    public void delete() {
+        this.dkConnect.getStorage().getPlayerPendingVerifications().delete()
+                .where("PlayerId", player.getId())
+                .where("VoiceAdapterName", voiceAdapter.getVerificationSystemName())
+                .execute();
     }
 
     private void checkValid() {

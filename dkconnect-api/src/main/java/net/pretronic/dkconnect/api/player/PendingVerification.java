@@ -13,4 +13,6 @@ public interface PendingVerification {
     boolean isValid();
 
     Verification complete(String userId, String username);
+
+    void delete();
 }
