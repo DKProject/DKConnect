@@ -74,7 +74,7 @@ public class DefaultDKConnectPlayer implements DKConnectPlayer {
         System.out.println(pendingVerification);
         if(pendingVerification != null) System.out.println(pendingVerification.isValid());
         if(pendingVerification != null && !pendingVerification.isValid()) {
-
+            System.out.println("delete");
             pendingVerification.delete();
             return null;
         }
