@@ -1,6 +1,13 @@
 package net.pretronic.dkconnect.minecraft.config.discord;
 
+import net.pretronic.dkconnect.api.voiceadapter.channel.TextChannel;
+import net.pretronic.dkconnect.api.voiceadapter.VoiceAdapter;
+import net.pretronic.libraries.message.Textable;
+import net.pretronic.libraries.message.bml.variable.VariableSet;
+
 public class ChatSync {
+
+    private transient VoiceAdapter voiceAdapter;
 
     private final boolean enabled;
 
@@ -27,6 +34,14 @@ public class ChatSync {
         return discordChannelId;
     }
 
+    public TextChannel getDiscordTextChannel() {
+        return getVoiceAdapter().getTextChannel(getDiscordChannelId());
+    }
+
+    public void sendMessage(Textable text, VariableSet variables) {
+        getDiscordTextChannel().sendMessage(text, variables);
+    }
+
     public String getDiscordMessage() {
         return discordMessage;
     }
@@ -37,5 +52,14 @@ public class ChatSync {
 
     public String getMinecraftMessage() {
         return minecraftMessage;
+    }
+
+    public VoiceAdapter getVoiceAdapter() {
+        if(voiceAdapter == null) throw new IllegalArgumentException("VoiceAdapter not initialized yet");
+        return voiceAdapter;
+    }
+
+    public void setVoiceAdapter(VoiceAdapter voiceAdapter) {
+        this.voiceAdapter = voiceAdapter;
     }
 }

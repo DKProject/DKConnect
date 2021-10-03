@@ -5,7 +5,7 @@
     <parent>
         <artifactId>DKConnect</artifactId>
         <groupId>net.pretronic.dkconnect</groupId>
-        <version>1.1.5.40-BETA</version>
+        <version>1.2.26.71-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -33,6 +33,12 @@
         <dependency>
             <groupId>net.pretronic.libraries</groupId>
             <artifactId>pretroniclibraries-utility</artifactId>
+            <version>${dependency.pretronic.libraries}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.pretronic.libraries</groupId>
+            <artifactId>pretroniclibraries-logging</artifactId>
             <version>${dependency.pretronic.libraries}</version>
             <scope>provided</scope>
         </dependency>
@@ -71,6 +77,11 @@
             <artifactId>dkconnect-common</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.vdurmont</groupId>
+            <artifactId>emoji-java</artifactId>
+            <version>5.1.1</version>
         </dependency>
     </dependencies>
 </project>

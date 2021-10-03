@@ -6,6 +6,7 @@ import net.pretronic.dkconnect.api.voiceadapter.VoiceAdapter;
 import net.pretronic.dkconnect.api.player.PlayerManager;
 import net.pretronic.dkconnect.common.player.DefaultPlayerManager;
 import net.pretronic.libraries.event.EventBus;
+import net.pretronic.libraries.logging.PretronicLogger;
 import net.pretronic.libraries.message.language.Language;
 import net.pretronic.libraries.utility.Iterators;
 
@@ -18,12 +19,14 @@ public class DefaultDKConnect implements DKConnect {
 
     private final PlayerManager playerManager;
     private final EventBus eventBus;
+    private final PretronicLogger logger;
     private final Storage storage;
     private final Collection<VoiceAdapter> voiceAdapters;
     private final Function<UUID, Language> languageGetter;
 
-    public DefaultDKConnect(EventBus eventBus, Database database, Function<UUID, Language> languageGetter) {
+    public DefaultDKConnect(EventBus eventBus, PretronicLogger logger, Database database, Function<UUID, Language> languageGetter) {
         this.eventBus = eventBus;
+        this.logger = logger;
         this.languageGetter = languageGetter;
         this.playerManager = new DefaultPlayerManager(this);
         this.storage = new Storage(database);
@@ -38,6 +41,11 @@ public class DefaultDKConnect implements DKConnect {
     @Override
     public EventBus getEventBus() {
         return this.eventBus;
+    }
+
+    @Override
+    public PretronicLogger getLogger() {
+        return this.logger;
     }
 
     @Override

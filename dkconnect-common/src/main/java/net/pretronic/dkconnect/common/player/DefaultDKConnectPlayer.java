@@ -70,7 +70,12 @@ public class DefaultDKConnectPlayer implements DKConnectPlayer {
     @Override
     public PendingVerification getPendingVerification(VoiceAdapter voiceAdapter) {
         Validate.notNull(voiceAdapter);
-        return Iterators.findOne(getOrLoadPendingVerifications(), pendingVerification -> pendingVerification.getVoiceAdapter().equals(voiceAdapter));
+        PendingVerification pendingVerification = Iterators.findOne(getOrLoadPendingVerifications(), pendingVerification0 -> pendingVerification0.getVoiceAdapter().equals(voiceAdapter));
+        if(pendingVerification != null && !pendingVerification.isValid()) {
+            pendingVerification.delete();
+            return null;
+        }
+        return pendingVerification;
     }
 
     @Override
@@ -101,7 +106,7 @@ public class DefaultDKConnectPlayer implements DKConnectPlayer {
 
     @Override
     public void sendMessage(VoiceAdapter voiceAdapter, Textable text) {
-        voiceAdapter.sendMessage(getVerificationInternal(voiceAdapter), text, VariableSet.create());
+        voiceAdapter.sendPrivateMessage(getVerificationInternal(voiceAdapter), text, VariableSet.create());
     }
 
     @Override

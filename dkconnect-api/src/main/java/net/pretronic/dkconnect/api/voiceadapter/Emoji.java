@@ -1,6 +1,6 @@
 package net.pretronic.dkconnect.api.voiceadapter;
 
-public interface TextChannel {
+public interface Emoji {
 
-    String getId();
+    String getName();
 }

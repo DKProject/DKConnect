@@ -1,6 +1,6 @@
 package net.pretronic.dkconnect.minecraft.listener;
 
-import net.pretronic.dkconnect.api.VoiceAdapterType;
+import net.pretronic.dkconnect.api.voiceadapter.VoiceAdapterType;
 import net.pretronic.dkconnect.api.event.verification.pending.PendingVerificationValidationCheckEvent;
 import net.pretronic.dkconnect.api.event.verification.unverify.UnverifiedEvent;
 import net.pretronic.dkconnect.api.event.verification.verify.VerifiedEvent;
@@ -33,10 +33,11 @@ public class PerformListener {
 
     @Listener
     public void onPendingVerificationValidationCheck(PendingVerificationValidationCheckEvent event) {
-        if(event.getVerification().getVoiceAdapter().getType().equals(VoiceAdapterType.DISCORD)) {
+        if(event.getVoiceAdapter().getType().equals(VoiceAdapterType.DISCORD)) {
             long lifetime = DiscordSharedConfig.PENDING_VERIFICATION_LIFETIME_TIME;
             long created = event.getVerification().getTime();
             boolean isValid = (System.currentTimeMillis()-created)<lifetime;
+
             event.setValid(isValid);
         }
     }

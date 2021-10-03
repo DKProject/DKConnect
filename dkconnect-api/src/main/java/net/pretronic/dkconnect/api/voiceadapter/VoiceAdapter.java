@@ -2,13 +2,15 @@ package net.pretronic.dkconnect.api.voiceadapter;
 
 import net.pretronic.dkconnect.api.DKConnect;
 import net.pretronic.dkconnect.api.player.Verification;
+import net.pretronic.dkconnect.api.voiceadapter.channel.TextChannel;
 import net.pretronic.libraries.command.manager.CommandManager;
 import net.pretronic.libraries.event.EventBus;
 import net.pretronic.libraries.message.Textable;
 import net.pretronic.libraries.message.bml.variable.VariableSet;
-import net.pretronic.libraries.message.language.Language;
+import net.pretronic.libraries.utility.annonations.Nullable;
 import net.pretronic.libraries.utility.interfaces.ObjectOwner;
 
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
@@ -29,24 +31,19 @@ public interface VoiceAdapter extends ObjectOwner {
 
     Textable getMessage(String key);
 
+    void importMessage(String key, InputStream inputStream);
 
-    void sendMessage(Verification verification, Textable text, VariableSet variables);
-
-    void sendMessage(String channelId, Language language, Textable text, VariableSet variables);
-
-    void sendMessage(String channelId, Textable text, VariableSet variables);
+    Emoji parseEmoji(String value);
 
 
-    StaticMessage getStaticMessage(String name);
+    CompletableFuture<Message> sendPrivateMessage(Verification verification, Textable text, VariableSet variables);
 
-    CompletableFuture<StaticMessage> sendStaticMessage(String name, String channelId, Language language, Textable text, VariableSet variables);
-
-    CompletableFuture<StaticMessage> sendStaticMessage(String name, String channelId, Textable text, VariableSet variables);
+    CompletableFuture<Message> sendPrivateMessage(VoiceAdapterUser user, Textable text, VariableSet variables);
 
 
-    CompletableFuture<String> createTextChannel(String categoryId, String name, String[] allowedRoles, String[] allowedUserIds);
+    CompletableFuture<TextChannel> createTextChannel(@Nullable String categoryId, String name, String[] allowedRoles, String[] allowedUserIds);
 
-    void deleteTextChannel(String channelId);
+    TextChannel getTextChannel(String id);
 
 
     void assignRole(Verification verification, String roleId);

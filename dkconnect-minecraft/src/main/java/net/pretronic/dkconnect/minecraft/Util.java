@@ -1,6 +1,6 @@
 package net.pretronic.dkconnect.minecraft;
 
-import net.pretronic.dkconnect.api.VoiceAdapterType;
+import net.pretronic.dkconnect.api.voiceadapter.VoiceAdapterType;
 import net.pretronic.dkconnect.api.player.Verification;
 import net.pretronic.dkconnect.minecraft.config.RoleAssignment;
 import net.pretronic.dkconnect.minecraft.config.discord.DiscordGuildConfig;

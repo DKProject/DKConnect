@@ -87,7 +87,7 @@ public class DefaultVerification implements Verification {
 
     @Override
     public void sendMessage(Textable text) {
-        getVoiceAdapter().sendMessage(this, text, VariableSet.create());
+        getVoiceAdapter().sendPrivateMessage(this, text, VariableSet.create());
     }
 
     @Override
