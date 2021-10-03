@@ -4,10 +4,13 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.pretronic.dkconnect.api.DKConnect;
-import net.pretronic.dkconnect.api.voiceadapter.StaticMessage;
-import net.pretronic.dkconnect.api.voiceadapter.VoiceAdapter;
-import net.pretronic.dkconnect.api.VoiceAdapterType;
+import net.pretronic.dkconnect.api.voiceadapter.*;
 import net.pretronic.dkconnect.api.player.Verification;
+import net.pretronic.dkconnect.api.voiceadapter.Emoji;
+import net.pretronic.dkconnect.api.voiceadapter.Message;
+import net.pretronic.dkconnect.api.voiceadapter.channel.Channel;
+import net.pretronic.dkconnect.api.voiceadapter.channel.TextChannel;
+import net.pretronic.dkconnect.voiceadapter.discord.channel.DiscordTextChannel;
 import net.pretronic.dkconnect.voiceadapter.discord.message.DiscordMessage;
 import net.pretronic.libraries.command.manager.CommandManager;
 import net.pretronic.libraries.command.manager.DefaultCommandManager;
@@ -19,22 +22,28 @@ import net.pretronic.libraries.message.Textable;
 import net.pretronic.libraries.message.bml.variable.VariableSet;
 import net.pretronic.libraries.message.language.Language;
 import net.pretronic.libraries.utility.Iterators;
+import net.pretronic.libraries.utility.StringUtil;
 import net.pretronic.libraries.utility.Validate;
 import net.pretronic.libraries.utility.annonations.Internal;
+import net.pretronic.libraries.utility.annonations.Nullable;
 import net.pretronic.libraries.utility.io.FileUtil;
 import net.pretronic.libraries.utility.map.Triple;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class DiscordVoiceAdapter implements VoiceAdapter {
+
+    private static final File DISCORD_MESSAGES_LOCATION = new File("plugins/DKConnect/discord-messages/");
 
     private final DKConnect dkConnect;
     private final String name;
@@ -47,10 +56,10 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
     private final Function<Triple<String, Language, VariableSet>, String> messageGetter;
 
     private final Map<String, DiscordMessage> messages;
-    private final Collection<StaticMessage> staticMessages;
+
+    private final Collection<Channel> channels;
 
     public DiscordVoiceAdapter(DKConnect dkConnect, String name, JDA jda, long guildId, String commandPrefix,
-                               Collection<StaticMessage> staticMessages,
                                EventBus eventBus, Function<Triple<String, Language, VariableSet>, String> messageGetter) {
         this.dkConnect = dkConnect;
         this.name = name;
@@ -58,10 +67,10 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
         this.commandPrefix = commandPrefix;
         this.eventBus = eventBus;
         this.commandManager = new DefaultCommandManager();
+        this.channels = new ArrayList<>();
         this.messages = loadMessages();
         this.messageGetter = messageGetter;
         this.jda = jda;
-        this.staticMessages = staticMessages;
     }
 
     @Override
@@ -92,77 +101,89 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
     }
 
     @Override
-    public void sendMessage(Verification verification, Textable text, VariableSet variables) {
+    public void importMessage(String key, InputStream inputStream) {
+        try {
+            String fileName = key.replace(".", "-")+".json";
+            Files.copy(inputStream, Paths.get(DISCORD_MESSAGES_LOCATION.getPath()+"/"+fileName));
+
+            Document document = DocumentFileType.JSON.getReader().read(inputStream);
+            DiscordMessage message = document.getAsObject(DiscordMessage.class);
+            message.setVoiceAdapter(this);
+            messages.put(key, message);
+            this.dkConnect.getLogger().info("("+getName()+") Imported message " + key);
+        } catch (IOException e) {
+            throw new RuntimeException("Can't extract message file from jar", e);
+        }
+    }
+
+    @Override
+    public Emoji parseEmoji(String value) {
+        return new DiscordEmoji(value);
+    }
+
+    @Override
+    public CompletableFuture<Message> sendPrivateMessage(Verification verification, Textable text, VariableSet variables) {
+        CompletableFuture<Message> future = new CompletableFuture<>();
         String userId = verification.getUserId();
         this.jda.retrieveUserById(userId).queue(user -> {
             user.openPrivateChannel().queue(channel -> {
-                DiscordBotUtil.sendMessage(channel, verification.getPlayer().getLanguage(), text, variables);
+                DiscordBotUtil.sendMessage(channel, verification.getPlayer().getLanguage(), text, variables).thenAccept(message -> {
+                    future.complete(new net.pretronic.dkconnect.voiceadapter.discord.DiscordMessage(this, new DiscordTextChannel(this, channel), message));
+                });
             }, Throwable::printStackTrace);
         }, Throwable::printStackTrace);
-    }
 
-    @Override
-    public void sendMessage(String channelId, Language language, Textable text, VariableSet variables) {
-        DiscordBotUtil.sendMessage(DiscordBotUtil.getTextChannel(this, channelId), language, text, variables);
-    }
-
-    @Override
-    public void sendMessage(String channelId, Textable text, VariableSet variables) {
-        sendMessage(channelId, null, text, variables);
-    }
-
-    @Override
-    public StaticMessage getStaticMessage(String name) {
-        return Iterators.findOne(this.staticMessages, message -> message.getName().equalsIgnoreCase(name));
-    }
-
-    @Override
-    public CompletableFuture<StaticMessage> sendStaticMessage(String name, String channelId, Language language, Textable text, VariableSet variables) {
-        Validate.notNull(language, text, variables, name, channelId);
-        TextChannel channel = DiscordBotUtil.getTextChannel(this, channelId);
-        CompletableFuture<StaticMessage> future = new CompletableFuture<>();
-        DiscordBotUtil.sendMessage(channel, language, text, variables).thenAccept(message -> {
-            DiscordStaticMessage staticMessage = new DiscordStaticMessage(this, name, channelId, message.getId());
-            future.complete(staticMessage);
-        });
         return future;
     }
 
     @Override
-    public CompletableFuture<StaticMessage> sendStaticMessage(String name, String channelId, Textable text, VariableSet variables) {
-        return sendStaticMessage(name, channelId, null, text, variables);
+    public CompletableFuture<Message> sendPrivateMessage(VoiceAdapterUser user, Textable text, VariableSet variables) {
+        return null;
     }
 
     @Override
-    public CompletableFuture<String> createTextChannel(String categoryId, String name, String[] allowedRoles, String[] allowedUserIds) {
-        CompletableFuture<String> future = new CompletableFuture<>();
+    public CompletableFuture<net.pretronic.dkconnect.api.voiceadapter.channel.TextChannel> createTextChannel(@Nullable String categoryId, String name, String[] allowedRoles, String[] allowedUserIds) {
+        CompletableFuture<net.pretronic.dkconnect.api.voiceadapter.channel.TextChannel> future = new CompletableFuture<>();
 
         Category category = DiscordBotUtil.getCategory(getGuild(), categoryId);
         getGuild().createTextChannel(name, category).queue(channel -> {
-            future.complete(channel.getId());
+            DiscordTextChannel discordTextChannel = new DiscordTextChannel(this, channel);
+            this.channels.add(discordTextChannel);
+            future.complete(discordTextChannel);
+
             if(allowedRoles != null) {
                 for (String roleId : allowedRoles) {
                     Role role = DiscordBotUtil.getRole(getGuild(), roleId);
                     channel.upsertPermissionOverride(role).setAllow(Permission.VIEW_CHANNEL, Permission.MESSAGE_READ).queue(ignored -> {}, Throwable::printStackTrace);
                 }
             }
+
             if(allowedUserIds != null) {
                 for (String userId : allowedUserIds) {
                     getGuild().retrieveMemberById(userId).queue(member -> {
                         channel.upsertPermissionOverride(member).setAllow(Permission.VIEW_CHANNEL, Permission.MESSAGE_READ).queue(ignored -> {}, Throwable::printStackTrace);
                     }, Throwable::printStackTrace);
                 }
-
             }
         }, Throwable::printStackTrace);
         return future;
     }
 
     @Override
-    public void deleteTextChannel(String channelId) {
-        TextChannel channel = getGuild().getTextChannelById(channelId);
-        if(channel == null) return;
-        channel.delete().queue();
+    public TextChannel getTextChannel(String id) {
+        Validate.notNull(id);
+        Channel channel = Iterators.findOne(this.channels, channel0 -> channel0.getId().equals(id) && channel0 instanceof TextChannel);
+        if(channel == null) {
+            net.dv8tion.jda.api.entities.TextChannel discordChannel = getGuild().getTextChannelById(id);
+            if(discordChannel != null) {
+                channel = new DiscordTextChannel(this, discordChannel);
+                this.channels.add(channel);
+            }
+        }
+        if(channel == null) {
+            throw new IllegalArgumentException("Can't retrieve text channel " + id);
+        }
+        return (TextChannel) channel;
     }
 
     @Override
@@ -224,33 +245,39 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
 
     private Map<String, DiscordMessage> loadMessages() {
         Map<String, DiscordMessage> messages = new HashMap<>();
-        File location = new File("plugins/DKConnect/discord-messages/");
-        if(!location.exists()) {
-            location.mkdirs();
+
+        if(!DISCORD_MESSAGES_LOCATION.exists()) {
+            this.dkConnect.getLogger().info("("+getName()+") Extracting default message");
+            DISCORD_MESSAGES_LOCATION.mkdirs();
             for (Iterator<Path> iterator = getDirectoryFiles("/discord-messages").iterator(); iterator.hasNext();){
                 Path child = iterator.next();
                 if(Files.isRegularFile(child)) {
+                    String key = StringUtil.split(child.getFileName().toString(), '.')[0];
+
+                    String fileName = key.replace(".", "-")+".json";
                     try {
-                        Files.copy(DiscordVoiceAdapter.class.getResourceAsStream(child.toString()), Paths.get(location.getPath()+"/"+child.getFileName()));
+                        Files.copy(DiscordVoiceAdapter.class.getResourceAsStream(child.toString()), Paths.get(DISCORD_MESSAGES_LOCATION.getPath()+"/"+fileName));
                     } catch (IOException e) {
-                        throw new RuntimeException("Can't extract message file from jar", e);
+                        throw new RuntimeException(e);
                     }
                 }
             }
         }
-
-        FileUtil.processFilesHierarchically(location, file -> {
+        this.dkConnect.getLogger().info("("+getName()+") Importing messages");
+        AtomicInteger messagesCount = new AtomicInteger();
+        FileUtil.processFilesHierarchically(DISCORD_MESSAGES_LOCATION, file -> {
             try {
-                String key = file.getName().split("\\.")[0].replace("-", ".");
+                String key = StringUtil.split(file.getName(), '.')[0].replace("-", ".");
                 Document document = DocumentFileType.JSON.getReader().read(file);
                 DiscordMessage message = document.getAsObject(DiscordMessage.class);
                 message.setVoiceAdapter(this);
                 messages.put(key, message);
+                this.dkConnect.getLogger().info("("+getName()+") Loaded message " + key);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         });
-
+        this.dkConnect.getLogger().info("("+getName()+") "+ messagesCount.get() + " messages loaded");
         return messages;
     }
 
@@ -297,5 +324,9 @@ public class DiscordVoiceAdapter implements VoiceAdapter {
 
     public Guild getGuild() {
         return DiscordBotUtil.getGuild(this);
+    }
+
+    public Collection<Channel> getChannels() {
+        return channels;
     }
 }

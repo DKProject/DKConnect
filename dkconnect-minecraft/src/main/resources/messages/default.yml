@@ -10,7 +10,7 @@ messages:
 
   dkconnect.error.onlyPlayer: '${dkconnect.prefix} &cThis command can only be executed as a player'
   dkconnect.error.player.alreadyVerified: '${dkconnect.prefix} &cYou are already verified to &{verification.username}'
-  dkconnect.error.player.openPendingVerification: '${dkconnect.prefix} &7You have already an open pending verification'
+  dkconnect.error.player.openPendingVerification: '${dkconnect.prefix} &7You have already an open pending verification. &7Your personal verification code is &e{pendingVerification.code}. &7Execute the command &e!verify {pendingVerification.code} to the &ePretronicBot'
   dkconnect.error.player.notVerified: '${dkconnect.prefix} &cYou are not verified'
   dkconnect.error.player.notFound: '${dkconnect.prefix} &cPlayer &e{name} &cnot found'
 

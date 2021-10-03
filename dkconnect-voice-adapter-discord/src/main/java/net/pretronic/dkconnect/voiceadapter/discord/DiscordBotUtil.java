@@ -20,6 +20,16 @@ public class DiscordBotUtil {
         }
     }
 
+    public static CompletableFuture<Message> editMessage(MessageChannel channel, String messageId, Language language, Textable text, VariableSet variables) {
+        if(text instanceof DiscordMessage) {
+            return ((DiscordMessage)text).edit(channel, messageId, language, variables);
+        } else {
+            CompletableFuture<Message> future = new CompletableFuture<>();
+            channel.editMessageById(messageId, text.toText(variables)).queue(future::complete, Throwable::printStackTrace);
+            return future;
+        }
+    }
+
     public static CompletableFuture<Member> getMember(DiscordVoiceAdapter voiceAdapter, String userId) {
         CompletableFuture<Member> future = new CompletableFuture<>();
         getGuild(voiceAdapter).retrieveMemberById(userId).queue(future::complete, Throwable::printStackTrace);

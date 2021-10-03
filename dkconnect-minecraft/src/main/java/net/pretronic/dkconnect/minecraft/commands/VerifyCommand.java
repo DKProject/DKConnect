@@ -27,8 +27,10 @@ public class VerifyCommand extends BasicCommand {
             OnlineMinecraftPlayer onlineMinecraftPlayer = (OnlineMinecraftPlayer) sender;
             DKConnectPlayer player = onlineMinecraftPlayer.getAs(DKConnectPlayer.class);
 
-            if(player.getPendingVerification(voiceAdapter) != null) {
-                sender.sendMessage(Messages.ERROR_PLAYER_OPEN_PENDING_VERIFICATION);
+            PendingVerification pendingVerification = player.getPendingVerification(voiceAdapter);
+            if(pendingVerification != null) {
+                sender.sendMessage(Messages.ERROR_PLAYER_OPEN_PENDING_VERIFICATION, VariableSet.create()
+                        .addDescribed("pendingVerification", pendingVerification));
                 return;
             }
 
@@ -37,7 +39,7 @@ public class VerifyCommand extends BasicCommand {
                 sender.sendMessage(Messages.ERROR_PLAYER_ALREADY_VERIFIED, VariableSet.create().addDescribed("verification", verification));
                 return;
             }
-            PendingVerification pendingVerification = player.verify(voiceAdapter);
+            pendingVerification = player.verify(voiceAdapter);
             if(pendingVerification != null) {
                 sender.sendMessage(Messages.COMMAND_VERIFY, VariableSet.create().addDescribed("pendingVerification", pendingVerification));
             }

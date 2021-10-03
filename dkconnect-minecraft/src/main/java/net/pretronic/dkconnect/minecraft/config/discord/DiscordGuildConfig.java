@@ -1,6 +1,7 @@
 package net.pretronic.dkconnect.minecraft.config.discord;
 
 import net.pretronic.dkconnect.api.voiceadapter.VoiceAdapter;
+import net.pretronic.dkconnect.api.voiceadapter.channel.TextChannel;
 import net.pretronic.dkconnect.minecraft.DKConnectPlugin;
 import net.pretronic.dkconnect.minecraft.config.RoleAssignment;
 import net.pretronic.libraries.message.StringTextable;
@@ -13,6 +14,8 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class DiscordGuildConfig {
+
+    private transient VoiceAdapter voiceAdapter;
 
     private String voiceAdapterName = "discord-1";
     private long guildId = 1234;
@@ -49,6 +52,9 @@ public class DiscordGuildConfig {
 
     public void init(DKConnectPlugin plugin) {
         plugin.getLogger().info("Initializing guild config " + guildId);
+        voiceAdapter = plugin.getDKConnect().getVoiceAdapter(voiceAdapterName);
+        chatSync.setVoiceAdapter(voiceAdapter);
+
         minecraftEventMessageTriggers = new ArrayList<>();
         plugin.getLogger().info("Found " + packs + " packs (Guild:"+guildId+")");
         if(packs != null) {
@@ -68,7 +74,8 @@ public class DiscordGuildConfig {
 
                     Textable text = messageTrigger.getEmbedKey() != null ? adapter.getMessage(messageTrigger.getEmbedKey()) : new StringTextable(messageTrigger.getMessage());
 
-                    adapter.sendMessage(messageTrigger.getChannelId(), text, VariableSet.create().addDescribed("event", event));
+                    TextChannel channel = adapter.getTextChannel(messageTrigger.getChannelId());
+                    channel.sendMessage(text, VariableSet.create().addDescribed("event", event));
                 });
                 plugin.getLogger().info("Registered pack " + messageTrigger.getName() + " for guild " + guildId);
             }
