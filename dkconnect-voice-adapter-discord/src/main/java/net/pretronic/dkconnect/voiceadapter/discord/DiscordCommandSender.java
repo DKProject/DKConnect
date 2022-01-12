@@ -18,7 +18,7 @@ public class DiscordCommandSender extends VoiceAdapterCommandSender<DiscordVoice
 
     @Override
     public String getName() {
-        return this.privateChannel.getUser().getName();
+        return this.privateChannel.getUser().getName()+"#"+this.privateChannel.getUser().getDiscriminator();
     }
 
     @Override
