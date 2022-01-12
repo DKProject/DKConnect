@@ -10,6 +10,8 @@ import java.util.function.Consumer;
 
 public interface TextChannel extends Channel {
 
+    CompletableFuture<Message> getMessage(String id);
+
     CompletableFuture<Message> sendMessage(Language language, Textable text, VariableSet variables);
 
     CompletableFuture<Message> sendMessage(Textable text, VariableSet variables);

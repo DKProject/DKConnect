@@ -59,4 +59,10 @@ public class DiscordBotUtil {
         if(channel == null) throw new IllegalArgumentException("Can't retrieve text channel " + channelId + " frin guild " + voiceAdapter.getGuildId());
         return channel;
     }
+
+    public static CompletableFuture<Message> getMessage(DiscordVoiceAdapter voiceAdapter, String channelId, String messageId) {
+        CompletableFuture<Message> future = new CompletableFuture<>();
+        getGuild(voiceAdapter).getTextChannelById(channelId).retrieveMessageById(messageId).queue(future::complete, Throwable::printStackTrace);
+        return future;
+    }
 }
