@@ -41,7 +41,10 @@ public class DiscordTextChannel implements TextChannel {
     @Override
     public CompletableFuture<Message> getMessage(String id) {
         CompletableFuture<Message> future = new CompletableFuture<>();
-        DiscordBotUtil.getMessage(this.voiceAdapter, this.original.getId(), id).thenAccept(message -> future.complete(new DiscordMessage(voiceAdapter, this, message)));
+        DiscordBotUtil.getMessage(this.voiceAdapter, this.original.getId(), id).thenAccept(message -> {
+            if(message == null) future.complete(null);
+            else future.complete(new DiscordMessage(voiceAdapter, this, message));
+        });
         return future;
     }
 
