@@ -1,0 +1,10 @@
+{
+  "content": null,
+  "embeds": [
+    {
+      "title": ":exclamation: Already open ticket",
+      "description": ":flag_gb: English\nYou have already an open ticket.\n\n\n:flag_de: German\nDu hast bereits ein offenes ticket.",
+      "color": 3092790
+    }
+  ]
+}
