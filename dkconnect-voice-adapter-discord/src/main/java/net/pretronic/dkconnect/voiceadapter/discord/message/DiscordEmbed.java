@@ -88,7 +88,7 @@ public class DiscordEmbed {
         builder.setFooter(convertToStringOrNull(footer, language, variables, messageGetter),
                 convertToStringOrNull(footerIconUrl, language, variables, messageGetter));
         if(timestamp0 != null) {
-            if(timestamp == null) timestamp = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2021-06-28T22:00:00.000Z");
+            if(timestamp == null) timestamp = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(this.timestamp0);
             builder.setTimestamp(timestamp);
         }
 

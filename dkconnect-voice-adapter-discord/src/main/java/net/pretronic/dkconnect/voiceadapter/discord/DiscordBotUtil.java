@@ -1,6 +1,7 @@
 package net.pretronic.dkconnect.voiceadapter.discord;
 
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.pretronic.dkconnect.voiceadapter.discord.message.DiscordMessage;
 import net.pretronic.libraries.message.Textable;
 import net.pretronic.libraries.message.bml.variable.VariableSet;
@@ -58,5 +59,14 @@ public class DiscordBotUtil {
         TextChannel channel = getGuild(voiceAdapter).getTextChannelById(channelId);
         if(channel == null) throw new IllegalArgumentException("Can't retrieve text channel " + channelId + " frin guild " + voiceAdapter.getGuildId());
         return channel;
+    }
+
+    public static CompletableFuture<Message> getMessage(DiscordVoiceAdapter voiceAdapter, String channelId, String messageId) {
+        CompletableFuture<Message> future = new CompletableFuture<>();
+        getGuild(voiceAdapter).getTextChannelById(channelId).retrieveMessageById(messageId).queue(future::complete, exception -> {
+            if(ErrorResponse.UNKNOWN_MESSAGE.test(exception)) future.complete(null);/*Message does not exists*/
+            else exception.printStackTrace();
+        });
+        return future;
     }
 }
