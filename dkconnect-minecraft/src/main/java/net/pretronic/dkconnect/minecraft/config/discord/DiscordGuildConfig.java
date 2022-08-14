@@ -15,18 +15,19 @@ import java.util.Collection;
 
 public class DiscordGuildConfig {
 
-    private transient VoiceAdapter voiceAdapter;
+    private final String voiceAdapterName = "discord-1";
+    private final long guildId = 1234;
 
-    private String voiceAdapterName = "discord-1";
-    private long guildId = 1234;
-    private Collection<RoleAssignment> roleAssignments = Arrays.asList(
+    private final Collection<RoleAssignment> roleAssignments = Arrays.asList(
             new RoleAssignment("default", "1234"),
             new RoleAssignment("role.admin", "1234"),
             new RoleAssignment("role.mod", "4321"));
-    private Collection<VoiceAdapterPack> packs = Arrays.asList(new VoiceAdapterPack("dkbans-notification-punishment", "1234"),
+
+    private final Collection<VoiceAdapterPack> packs = Arrays.asList(new VoiceAdapterPack("dkbans-notification-punishment", "1234"),
             new VoiceAdapterPack("join", "1234"),
             new VoiceAdapterPack("leave", "1234"));
-    private ChatSync chatSync = new ChatSync(true, "1234", null, "dkconnect.voiceadapter.discord.syncChat", "dkconnect.chatSync.message");
+
+    private final ChatSync chatSync = new ChatSync(true, "1234", null, "dkconnect.voiceadapter.discord.syncChat", "dkconnect.chatSync.message");
 
     private transient Collection<MinecraftEventMessageTrigger> minecraftEventMessageTriggers;
 
@@ -52,15 +53,13 @@ public class DiscordGuildConfig {
 
     public void init(DKConnectPlugin plugin) {
         plugin.getLogger().info("Initializing guild config " + guildId);
-        voiceAdapter = plugin.getDKConnect().getVoiceAdapter(voiceAdapterName);
+        VoiceAdapter voiceAdapter = plugin.getDKConnect().getVoiceAdapter(voiceAdapterName);
         chatSync.setVoiceAdapter(voiceAdapter);
 
         minecraftEventMessageTriggers = new ArrayList<>();
         plugin.getLogger().info("Found " + packs + " packs (Guild:"+guildId+")");
-        if(packs != null) {
-            for (VoiceAdapterPack pack : packs) {
-                minecraftEventMessageTriggers.add(pack.toTrigger());
-            }
+        for (VoiceAdapterPack pack : packs) {
+            minecraftEventMessageTriggers.add(pack.toTrigger());
         }
         if(getMinecraftEventMessageTriggers() != null) {
             for (MinecraftEventMessageTrigger messageTrigger : getMinecraftEventMessageTriggers()) {
