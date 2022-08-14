@@ -80,26 +80,6 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>se.eris</groupId>
-                <artifactId>notnull-instrumenter-maven-plugin</artifactId>
-                <version>1.0.0</version>
-                <executions>
-                    <execution>
-                        <id>instrument</id>
-                        <goals>
-                            <goal>instrument</goal>
-                            <goal>tests-instrument</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <notNull>
-                        <param>org.jetbrains.annotations.NotNull</param>
-                    </notNull>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
